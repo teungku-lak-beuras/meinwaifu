@@ -1,0 +1,27 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style
+        name="Base.Theme.MeinWaifu"
+        parent="Theme.Material3.DayNight.NoActionBar">
+    </style>
+
+    <style
+        name="Theme.MeinWaifu"
+        parent="Base.Theme.MeinWaifu"/>
+
+    <!--
+        `postSplashScreenTheme` is required or else the application theme will stuck at the splash
+        screen's theme.
+
+        Since using `windowSplashScreenAnimatedIcon` is not realistic (too much effort, one need to
+        learn how to animate programmatically in XML) we use `windowBackground` instead. There, we
+        define each layer of the background with `layer-list`.
+            Reference: https://blog.kotlin-academy.com/how-to-implement-a-splash-screen-in-jetpack-compose-with-the-splashscreen-api-6f2767ede9d9
+            Warning: the reference site is paywall-ed. Fuck you world.
+    -->
+    <style
+        name="Theme.MeinWaifu.SplashScreen"
+        parent="Theme.SplashScreen">
+        <item name="android:windowBackground">@drawable/splash_icon</item>
+        <item name="postSplashScreenTheme">@style/Theme.MeinWaifu</item>
+    </style>
+</resources>
