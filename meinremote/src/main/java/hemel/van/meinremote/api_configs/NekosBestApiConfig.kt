@@ -1,6 +1,5 @@
 package hemel.van.meinwaifu.remote.api_configs
 
-import hemel.van.meinwaifu.BuildConfig
 import hemel.van.meinwaifu.remote.api_services.NekosBestApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -10,10 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class NekosBestApiConfig {
     companion object {
         fun getApiService(): NekosBestApiService {
-            val loggingInterceptor = when (BuildConfig.DEBUG) {
-                true -> HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-                false -> HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
-            }
+            val loggingInterceptor = HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
             val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
                 .build()
