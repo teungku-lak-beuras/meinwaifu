@@ -1,13 +1,13 @@
 package hemel.van.meinwaifu.reusables
 
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
@@ -16,7 +16,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -25,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,14 +37,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hemel.van.meinwaifu.R
 
+/**
+ * This is Mein Waifu's app bar. Currently programmed for compact screen only and does not accept
+ * modifier.
+ */
 @Composable
 fun MeinTopAppBar(
-    @StringRes title: Int,
-    @DrawableRes leftIconId: Int,
-    @StringRes leftIconContentDescriptionId: Int? = null,
-    @StringRes rightIconContentDescription: Int? = null,
-    leftIconCallback: (() -> Unit)? = null,
-    rightIconCallback: (() -> Unit)? = null
+    title: String,
+    logo: Painter,
+    logoContentDescription: String,
+    logoCallback: (() -> Unit) = {},
+    dropDown: @Composable (() -> Unit) = {}
 ) {
     Surface(
         modifier = Modifier
@@ -63,7 +71,7 @@ fun MeinTopAppBar(
                     .background(color = Color.Transparent, shape = CircleShape)
                     .align(Alignment.CenterVertically)
                     .clip(CircleShape)
-                    .clickable {}
+                    .clickable { logoCallback.invoke() }
             ) {
                 Image(
                     modifier = Modifier
@@ -71,10 +79,8 @@ fun MeinTopAppBar(
                         .size(40.dp)
                         .align(Alignment.Center),
                     contentScale = ContentScale.Crop,
-                    contentDescription = if (leftIconContentDescriptionId != null)
-                        stringResource(leftIconContentDescriptionId)
-                        else null,
-                    painter = painterResource(leftIconId)
+                    contentDescription = logoContentDescription,
+                    painter = logo
                 )
             }
             Text(
@@ -82,37 +88,69 @@ fun MeinTopAppBar(
                     .padding(start = 8.dp)
                     .paddingFromBaseline(top = 48.dp, bottom = 24.dp),
                 style = MaterialTheme.typography.titleMedium,
-                text = stringResource(title)
+                text = title
             )
-            if (rightIconContentDescription != null) {
-                Box(
-                    modifier = Modifier
-                        .padding(end = 16.dp)
-                        .size(56.dp)
-                        .background(color = Color.Transparent, shape = CircleShape)
-                        .align(Alignment.CenterVertically)
-                        .clip(CircleShape)
-                        .clickable {}
-                ) {
-                    Icon(
-                        modifier = Modifier.align(Alignment.Center),
-                        contentDescription = stringResource(rightIconContentDescription),
-                        tint = MaterialTheme.colorScheme.surface,
-                        imageVector = Icons.Filled.Menu
-                    )
-                }
+            Row(
+                modifier = Modifier
+                    .padding(end = 16.dp)
+                    .size(56.dp)
+                    .background(color = Color.Transparent, shape = CircleShape)
+                    .align(Alignment.CenterVertically)
+            ) {
+                dropDown.invoke()
             }
         }
     }
 }
 
-@Preview(device = "spec:width=411dp,height=891dp")
+@Preview(name = "Without dropdwon", device = "spec:width=411dp,height=891dp")
 @Composable
-fun MeinTopAppBarPreview() {
+fun MeinTopAppBarWithoutDropdownPreview() {
     MeinTopAppBar(
-        title = R.string.app_name,
-        leftIconId = R.drawable.main_icon_square,
-        leftIconContentDescriptionId = R.string.app_bar_navigation_icon,
-        rightIconContentDescription = R.string.app_bar_menu_more
+        title = "Example string",
+        logo = painterResource(R.drawable.main_icon_square),
+        logoContentDescription = "Example content description"
+    )
+}
+
+@Preview(name = "With dropdwon", device = "spec:width=411dp,height=891dp")
+@Composable
+fun MeinTopAppBarWithDropdownPreview() {
+    MeinTopAppBar(
+        title = "Example string",
+        logo = painterResource(R.drawable.main_icon_square),
+        logoContentDescription = "Example content description",
+        dropDown = {
+            IconButton(
+                onClick = {}
+            ) {
+                Icon(
+                    modifier = Modifier.fillMaxSize(),
+                    contentDescription = stringResource(R.string.app_bar_menu_more),
+                    imageVector = Icons.Filled.Menu
+                )
+            }
+            DropdownMenu(
+                expanded = true,
+                onDismissRequest = {},
+                shape = MaterialTheme.shapes.large,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+            ) {
+                DropdownMenuItem(
+                    onClick = {},
+                    text = { Text(stringResource(R.string.app_bar_menu_help)) }
+                )
+                HorizontalDivider()
+                DropdownMenuItem(
+                    onClick = {},
+                    text = { Text(stringResource(R.string.app_bar_menu_settings)) }
+                )
+                HorizontalDivider()
+                DropdownMenuItem(
+                    onClick = {},
+                    text = { Text(stringResource(R.string.app_bar_menu_about)) }
+                )
+            }
+        }
     )
 }
