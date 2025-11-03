@@ -58,27 +58,29 @@ android {
 // FUCK YOU TOML!!!
 //noinspection UseTomlInstead
 dependencies {
+    // Splash screen.
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
     val composeBom = platform("androidx.compose:compose-bom:2025.10.01")
 
     implementation(composeBom)
+    implementation("androidx.core:core-ktx:1.17.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
     implementation("androidx.navigation:navigation-compose:2.9.5")
-    implementation("androidx.core:core-splashscreen:1.0.1")
-    implementation("androidx.core:core-ktx:1.17.0")
     implementation("androidx.activity:activity-compose:1.11.0")
     implementation("com.google.android.material:material:1.13.0")
-
     implementation("androidx.compose.ui:ui:1.9.4")
     implementation("androidx.compose.ui:ui-tooling-preview:1.9.4")
     implementation("androidx.compose.material3:material3:1.4.0")
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
     implementation("androidx.compose.material3:material3-window-size-class:1.4.0")
 
+    debugImplementation("androidx.compose.ui:ui-tooling")
+
     androidTestImplementation(composeBom)
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
-    testImplementation("junit:junit:4.13.2")
 
-    debugImplementation("androidx.compose.ui:ui-tooling")
+    testImplementation("junit:junit:4.13.2")
 }

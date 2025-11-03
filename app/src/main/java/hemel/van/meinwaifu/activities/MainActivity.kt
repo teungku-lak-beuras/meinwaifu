@@ -27,8 +27,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                val isLandscape =
-                    resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+                val isLandscape = resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
                 val windowSizeClass = calculateWindowSizeClass(this)
 
                 MeinWaifu(isLandscape, windowSizeClass)

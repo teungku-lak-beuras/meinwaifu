@@ -138,17 +138,17 @@ fun MeinTopAppBarWithDropdownPreview() {
             ) {
                 DropdownMenuItem(
                     onClick = {},
-                    text = { Text(stringResource(R.string.app_bar_menu_help)) }
+                    text = { Text(stringResource(R.string.screen_help)) }
                 )
                 HorizontalDivider()
                 DropdownMenuItem(
                     onClick = {},
-                    text = { Text(stringResource(R.string.app_bar_menu_settings)) }
+                    text = { Text(stringResource(R.string.screen_settings)) }
                 )
                 HorizontalDivider()
                 DropdownMenuItem(
                     onClick = {},
-                    text = { Text(stringResource(R.string.app_bar_menu_about)) }
+                    text = { Text(stringResource(R.string.screen_about)) }
                 )
             }
         }

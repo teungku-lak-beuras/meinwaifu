@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import hemel.van.meinwaifu.R
 import hemel.van.meinwaifu.reusables.MeinTopAppBar
@@ -33,19 +35,23 @@ import hemel.van.meinwaifu.reusables.MeinTopAppBar
 fun HomeScreenCompactContent(
     modifier: Modifier = Modifier
 ) {
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         Text("Hello world!")
     }
 }
 
 @Composable
 fun HomeScreenCompact(
-    modifier: Modifier = Modifier
+    navigateToHelpScreen: () -> Unit = {},
+    navigateToSettingsScreen: () -> Unit = {},
+    navigateToAboutScreen: () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
             MeinTopAppBar(
-                title = "Example string",
+                title = stringResource(R.string.screen_home),
                 logo = painterResource(R.drawable.main_icon_square),
                 logoContentDescription = stringResource(R.string.app_bar_navigation_icon),
                 dropDown = {
@@ -61,35 +67,31 @@ fun HomeScreenCompact(
                         )
                     }
                     DropdownMenu(
-                        expanded = dropDownExpanded,
-                        onDismissRequest = { dropDownExpanded = false },
                         shape = MaterialTheme.shapes.large,
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                        expanded = dropDownExpanded,
+                        onDismissRequest = { dropDownExpanded = false }
                     ) {
                         DropdownMenuItem(
-                            onClick = {},
-                            text = { Text(stringResource(R.string.app_bar_menu_help)) }
+                            text = { Text(stringResource(R.string.screen_help)) },
+                            onClick = { dropDownExpanded = false; navigateToHelpScreen.invoke() }
                         )
                         HorizontalDivider()
                         DropdownMenuItem(
-                            onClick = {},
-                            text = { Text(stringResource(R.string.app_bar_menu_settings)) }
+                            text = { Text(stringResource(R.string.screen_settings)) },
+                            onClick = { dropDownExpanded = false; navigateToSettingsScreen.invoke() }
                         )
                         HorizontalDivider()
                         DropdownMenuItem(
-                            onClick = {},
-                            text = { Text(stringResource(R.string.app_bar_menu_about)) }
+                            text = { Text(stringResource(R.string.screen_about)) },
+                            onClick = { dropDownExpanded = false; navigateToAboutScreen.invoke() }
                         )
                     }
                 }
             )
         }
     ) { paddingValues ->
-        Column(
-            modifier = modifier.padding(paddingValues)
-        ) {
-            HomeScreenCompactContent()
-        }
+        HomeScreenCompactContent(modifier = Modifier.padding(paddingValues))
     }
 }
 
@@ -105,27 +107,42 @@ fun HomeScreenExpanded() {
 @Composable
 fun HomeScreen(
     isLandscape: Boolean,
-    windowSizeClass: WindowSizeClass
+    windowSizeClass: WindowSizeClass,
+    navigateToHelpScreen: () -> Unit = {},
+    navigateToSettingsScreen: () -> Unit = {},
+    navigateToAboutScreen: () -> Unit = {}
 ) {
-    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact) {
-        HomeScreenCompact()
-    }
-    if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Medium || isLandscape) {
-        HomeScreenMedium()
-    }
-    else if (windowSizeClass.widthSizeClass == WindowWidthSizeClass.Expanded) {
-        HomeScreenExpanded()
-    }
-    else {
-        HomeScreenCompact()
+    when (windowSizeClass.widthSizeClass) {
+        WindowWidthSizeClass.Compact -> {
+            if (isLandscape) {
+                HomeScreenCompact()
+            }
+            else {
+                HomeScreenCompact(
+                    navigateToHelpScreen = navigateToHelpScreen,
+                    navigateToSettingsScreen = navigateToSettingsScreen,
+                    navigateToAboutScreen = navigateToAboutScreen
+                )
+            }
+        }
+        WindowWidthSizeClass.Medium -> {
+            HomeScreenMedium()
+        }
+        WindowWidthSizeClass.Expanded -> {
+            HomeScreenExpanded()
+        }
     }
 }
 
-/* ==========
+/**
  * Prikitiws
- * ========== */
-@Preview
+ */
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@Preview(name = "Compact screen portrait", device = "spec:width=411dp,height=891dp")
 @Composable
 fun HomeScreenCompactPreview() {
-    HomeScreenCompact()
+    HomeScreen(
+        isLandscape = false,
+        windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(411.dp, 891.dp))
+    )
 }
