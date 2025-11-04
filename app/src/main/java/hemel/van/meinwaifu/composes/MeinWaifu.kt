@@ -42,11 +42,23 @@ fun MeinWaifu(windowSizeClass: WindowSizeClass) {
                 windowSizeClass = windowSizeClass,
                 navigateToHelpScreen = {
                     navController.navigate("help")
-                }
+                },
+                navigateToSettingsScreen = {
+                    navController.navigate("settings")
+                },
+                navigateToAboutScreen = {}
             )
         }
         composable("help") {
             HelpScreen(
+                windowSizeClass = windowSizeClass,
+                navigateToHomeScreen = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable("settings") {
+            SettingsScreen(
                 windowSizeClass = windowSizeClass,
                 navigateToHomeScreen = {
                     navController.popBackStack()

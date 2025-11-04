@@ -34,9 +34,9 @@ import hemel.van.meinwaifu.reusables.MeinTopAppBar
 
 @Composable
 fun HomeScreenDropDown(
-    navigateToHelpScreen: () -> Unit = {},
-    navigateToSettingsScreen: () -> Unit = {},
-    navigateToAboutScreen: () -> Unit = {}
+    navigateToHelpScreen: () -> Unit,
+    navigateToSettingsScreen: () -> Unit,
+    navigateToAboutScreen: () -> Unit
 ) {
     var dropDownExpanded by remember { mutableStateOf(false) }
 
@@ -143,9 +143,9 @@ fun HomeScreenExpanded() {
 @Composable
 fun HomeScreen(
     windowSizeClass: WindowSizeClass,
-    navigateToHelpScreen: () -> Unit = {},
-    navigateToSettingsScreen: () -> Unit = {},
-    navigateToAboutScreen: () -> Unit = {}
+    navigateToHelpScreen: () -> Unit,
+    navigateToSettingsScreen: () -> Unit,
+    navigateToAboutScreen: () -> Unit
 ) {
     when (windowSizeClass.widthSizeClass) {
         WindowWidthSizeClass.Compact -> {

@@ -17,72 +17,76 @@ import hemel.van.meinwaifu.reusables.MeinSideAppBar
 import hemel.van.meinwaifu.reusables.MeinTopAppBar
 
 @Composable
-fun HelpScreenCompactContent(
+fun SettingsScreenContent(
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
-    ) {
-        Text("Help screen is under construction... :-D")
+    ){
+        Text("Settings screen is under construction... :-D")
     }
 }
 
 @Composable
-fun HelpScreenCompact(
+fun SettingsScreenCompact(
     modifier: Modifier = Modifier,
     navigateToHomeScreen: () -> Unit
 ) {
     Scaffold(
         topBar = {
             MeinTopAppBar(
-                title = stringResource(R.string.screen_help),
+                title = stringResource(R.string.screen_settings),
                 logo = painterResource(R.drawable.main_icon_square),
                 logoContentDescription = stringResource(R.string.navigate_to_screen_home),
                 logoCallback = navigateToHomeScreen
             )
         }
     ) { paddingValues ->
-        HelpScreenCompactContent(modifier = modifier.padding(paddingValues))
+        SettingsScreenContent(modifier = modifier.padding(paddingValues))
     }
 }
 
 @Composable
-fun HelpScreenMedium(
+fun SettingsScreenMedium(
     modifier: Modifier = Modifier,
     navigateToHomeScreen: () -> Unit
 ) {
     LandscapeScaffold(
         sideBar = {
             MeinSideAppBar(
-                logo =  painterResource(R.drawable.main_icon_square),
-                logoContentDescription = stringResource(R.string.screen_home),
+                logo = painterResource(R.drawable.main_icon_square),
+                logoContentDescription = stringResource(R.string.navigate_to_screen_home),
                 logoCallback = navigateToHomeScreen
             )
         },
         content = {
-            HelpScreenCompactContent()
+            SettingsScreenContent()
         }
     )
 }
 
 @Composable
-fun HelpScreen(
+fun SettingsScreenExpanded() {}
+
+@Composable
+fun SettingsScreen(
     windowSizeClass: WindowSizeClass,
-    navigateToHomeScreen: () -> Unit = {}
+    navigateToHomeScreen: () -> Unit
 ) {
     when (windowSizeClass.widthSizeClass) {
         WindowWidthSizeClass.Compact -> {
-            HelpScreenCompact(
+            SettingsScreenCompact(
                 navigateToHomeScreen = navigateToHomeScreen
             )
         }
         WindowWidthSizeClass.Medium -> {
-            HelpScreenMedium(
+            SettingsScreenMedium(
                 navigateToHomeScreen = navigateToHomeScreen
             )
         }
+
         WindowWidthSizeClass.Expanded -> {
-            HelpScreenMedium(
+            SettingsScreenMedium(
                 navigateToHomeScreen = navigateToHomeScreen
             )
         }
@@ -90,24 +94,16 @@ fun HelpScreen(
 }
 
 /**
- * Prikitiws
+ * Prikitiws.
  */
-@Preview(
-    name = "Compact screen",
-    device = "spec:width=411dp,height=891dp",
-    showSystemUi = true
-)
+@Preview(name = "Compact screen", device = "spec:width=411dp,height=891dp")
 @Composable
-fun HelpScreenCompactPreview() {
-    HelpScreenCompact {}
+fun SettingsScreenCompactPreview() {
+    SettingsScreenCompact {}
 }
 
-@Preview(
-    name = "Medium screen",
-    device = "spec:width=891dp,height=411dp",
-    showSystemUi = true
-)
+@Preview(name = "Medium screen", device = "spec:width=411dp,height=891dp,orientation=landscape")
 @Composable
-fun HelpScreenMediumPreview() {
-    HelpScreenMedium {}
+fun SettingsScreenMediumPreview() {
+    SettingsScreenMedium {}
 }
