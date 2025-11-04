@@ -2,6 +2,7 @@ package hemel.van.meinwaifu.composes
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
@@ -33,6 +34,46 @@ import hemel.van.meinwaifu.reusables.MeinSideAppBar
 import hemel.van.meinwaifu.reusables.MeinTopAppBar
 
 @Composable
+fun HomeScreenDropDown(
+    navigateToHelpScreen: () -> Unit = {},
+    navigateToSettingsScreen: () -> Unit = {},
+    navigateToAboutScreen: () -> Unit = {}
+) {
+    var dropDownExpanded by remember { mutableStateOf(false) }
+
+    IconButton(
+        modifier = Modifier.fillMaxSize(),
+        onClick = { dropDownExpanded = !dropDownExpanded }
+    ) {
+        Icon(
+            contentDescription = stringResource(R.string.app_bar_menu_more),
+            imageVector = Icons.Filled.Menu
+        )
+    }
+    DropdownMenu(
+        shape = MaterialTheme.shapes.large,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+        expanded = dropDownExpanded,
+        onDismissRequest = { dropDownExpanded = false }
+    ) {
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.screen_help)) },
+            onClick = { dropDownExpanded = false; navigateToHelpScreen.invoke() }
+        )
+        HorizontalDivider()
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.screen_settings)) },
+            onClick = { dropDownExpanded = false; navigateToSettingsScreen.invoke() }
+        )
+        HorizontalDivider()
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.screen_about)) },
+            onClick = { dropDownExpanded = false; navigateToAboutScreen.invoke() }
+        )
+    }
+}
+
+@Composable
 fun HomeScreenCompactContent(
     modifier: Modifier = Modifier
 ) {
@@ -57,37 +98,11 @@ fun HomeScreenCompact(
                 logo = painterResource(R.drawable.main_icon_square),
                 logoContentDescription = stringResource(R.string.app_bar_navigation_icon),
                 dropDown = {
-                    var dropDownExpanded by remember { mutableStateOf(false) }
-
-                    IconButton(
-                        onClick = { dropDownExpanded = !dropDownExpanded }
-                    ) {
-                        Icon(
-                            contentDescription = stringResource(R.string.app_bar_menu_more),
-                            imageVector = Icons.Filled.Menu
-                        )
-                    }
-                    DropdownMenu(
-                        shape = MaterialTheme.shapes.large,
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-                        expanded = dropDownExpanded,
-                        onDismissRequest = { dropDownExpanded = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.screen_help)) },
-                            onClick = { dropDownExpanded = false; navigateToHelpScreen.invoke() }
-                        )
-                        HorizontalDivider()
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.screen_settings)) },
-                            onClick = { dropDownExpanded = false; navigateToSettingsScreen.invoke() }
-                        )
-                        HorizontalDivider()
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.screen_about)) },
-                            onClick = { dropDownExpanded = false; navigateToAboutScreen.invoke() }
-                        )
-                    }
+                    HomeScreenDropDown(
+                        navigateToHelpScreen = navigateToHelpScreen,
+                        navigateToSettingsScreen = navigateToSettingsScreen,
+                        navigateToAboutScreen = navigateToAboutScreen
+                    )
                 }
             )
         }
@@ -108,6 +123,11 @@ fun HomeScreenMedium(
                 logo = painterResource(R.drawable.main_icon_square),
                 logoContentDescription = stringResource(R.string.app_bar_navigation_icon),
                 dropDown = {
+                    HomeScreenDropDown(
+                        navigateToHelpScreen = navigateToHelpScreen,
+                        navigateToSettingsScreen = navigateToSettingsScreen,
+                        navigateToAboutScreen = navigateToAboutScreen
+                    )
                 }
             )
         },
