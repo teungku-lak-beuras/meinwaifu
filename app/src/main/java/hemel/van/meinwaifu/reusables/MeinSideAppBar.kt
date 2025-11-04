@@ -6,13 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -39,10 +37,10 @@ import androidx.compose.ui.unit.dp
 import hemel.van.meinwaifu.R
 
 /**
- * Mein Waifu's app bar for portrait screen.
+ * Mein Waifu's app bar for landscape screen.
  */
 @Composable
-fun MeinTopAppBar(
+fun MeinSideAppBar(
     title: String,
     logo: Painter,
     logoContentDescription: String,
@@ -51,24 +49,33 @@ fun MeinTopAppBar(
 ) {
     Surface(
         modifier = Modifier
-            .systemBarsPadding()
-            .fillMaxWidth()
-            .height(72.dp),
+            .fillMaxHeight()
+            .width(72.dp),
         color = MaterialTheme.colorScheme.primary,
         shape = RoundedCornerShape(
             topStart = 0.dp,
             topEnd = 0.dp,
-            bottomStart = 24.dp,
+            bottomStart = 0.dp,
             bottomEnd = 24.dp
         )
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
             Box(
                 modifier = Modifier
-                    .padding(start = 16.dp)
+                    .padding(top = 16.dp)
+                    .size(56.dp)
+                    .background(color = Color.Transparent, shape = CircleShape)
+                    .align(Alignment.CenterHorizontally),
+                contentAlignment = Alignment.Center
+            ) {
+                dropDown.invoke()
+            }
+            Box(
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
                     .size(56.dp)
                     .background(color = Color.Transparent, shape = CircleShape)
                     .clip(CircleShape)
@@ -84,43 +91,27 @@ fun MeinTopAppBar(
                     painter = logo
                 )
             }
-            Text(
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .paddingFromBaseline(top = 48.dp, bottom = 24.dp),
-                style = MaterialTheme.typography.titleMedium,
-                text = title
-            )
-            Box(
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .size(56.dp)
-                    .background(color = Color.Transparent, shape = CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                dropDown.invoke()
-            }
         }
     }
 }
 
-@Preview(name = "Without dropdwon")
+@Preview(name = "Without dropdwon", device = "spec:width=411dp,height=891dp,orientation=landscape")
 @Composable
-fun MeinTopAppBarWithoutDropdownPreview() {
-    MeinTopAppBar(
+fun MeinSideAppBarWithoutDropdownPreview() {
+    MeinSideAppBar(
         title = "Example string",
         logo = painterResource(R.drawable.main_icon_square),
-        logoContentDescription = "Example content description"
+        logoContentDescription = "Example string",
     )
 }
 
-@Preview(name = "With dropdwon")
+@Preview(name = "With dropdwon", device = "spec:width=411dp,height=891dp,orientation=landscape")
 @Composable
-fun MeinTopAppBarWithDropdownPreview() {
-    MeinTopAppBar(
+fun MeinSideAppBarWithDropdownPreview() {
+    MeinSideAppBar(
         title = "Example string",
         logo = painterResource(R.drawable.main_icon_square),
-        logoContentDescription = "Example content description",
+        logoContentDescription = "Example string",
         dropDown = {
             IconButton(
                 onClick = {}

@@ -1,9 +1,16 @@
 package hemel.van.meinwaifu.composes
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DropdownMenu
@@ -13,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
@@ -26,9 +34,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import hemel.van.meinwaifu.R
+import hemel.van.meinwaifu.reusables.MeinSideAppBar
 import hemel.van.meinwaifu.reusables.MeinTopAppBar
 
 @Composable
@@ -46,9 +54,10 @@ fun HomeScreenCompactContent(
 fun HomeScreenCompact(
     navigateToHelpScreen: () -> Unit = {},
     navigateToSettingsScreen: () -> Unit = {},
-    navigateToAboutScreen: () -> Unit = {},
+    navigateToAboutScreen: () -> Unit = {}
 ) {
     Scaffold(
+        modifier = Modifier.systemBarsPadding(),
         topBar = {
             MeinTopAppBar(
                 title = stringResource(R.string.screen_home),
@@ -58,7 +67,6 @@ fun HomeScreenCompact(
                     var dropDownExpanded by remember { mutableStateOf(false) }
 
                     IconButton(
-                        modifier = Modifier.fillMaxSize(),
                         onClick = { dropDownExpanded = !dropDownExpanded }
                     ) {
                         Icon(
@@ -95,9 +103,68 @@ fun HomeScreenCompact(
     }
 }
 
+/**
+ * When in landscape mode and you are not being able to change screen's cutout color, use this
+ * container.
+ *
+ * `statusBarPadding` will leave the status bar (top) alone.
+ * `navigationBarsPadding` will leave the system navigation (bottom) alone.
+ *
+ * Hence left only the system's cutout (that notch bar that is notoriously difficult to customise).
+ */
 @Composable
-fun HomeScreenMedium() {
+fun LandscapeScaffold(
+    sideBar: @Composable (() -> Unit),
+    content: @Composable (() -> Unit)
+) {
+    Surface(
+        modifier = Modifier
+            .fillMaxSize(),
+        color = MaterialTheme.colorScheme.primary,
+    ) {
+        Surface(
+            modifier = Modifier
+                .displayCutoutPadding(),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            Row {
+                Box(
+                    modifier = Modifier
+                        .statusBarsPadding()
+                        .navigationBarsPadding()
+                ) {
+                    sideBar.invoke()
+                }
+                Column(
+                    modifier = Modifier.safeContentPadding()
+                ) {
+                    content.invoke()
+                }
+            }
+        }
+    }
+}
 
+@Composable
+fun HomeScreenMedium(
+    navigateToHelpScreen: () -> Unit = {},
+    navigateToSettingsScreen: () -> Unit = {},
+    navigateToAboutScreen: () -> Unit = {}
+) {
+    LandscapeScaffold(
+        sideBar = {
+            MeinSideAppBar(
+                title = stringResource(R.string.screen_home),
+                logo = painterResource(R.drawable.main_icon_square),
+                logoContentDescription = stringResource(R.string.app_bar_navigation_icon),
+                dropDown = {
+                }
+            )
+        },
+        content = {
+            HomeScreenCompactContent()
+        }
+    )
 }
 
 @Composable
@@ -106,7 +173,6 @@ fun HomeScreenExpanded() {
 
 @Composable
 fun HomeScreen(
-    isLandscape: Boolean,
     windowSizeClass: WindowSizeClass,
     navigateToHelpScreen: () -> Unit = {},
     navigateToSettingsScreen: () -> Unit = {},
@@ -114,22 +180,25 @@ fun HomeScreen(
 ) {
     when (windowSizeClass.widthSizeClass) {
         WindowWidthSizeClass.Compact -> {
-            if (isLandscape) {
-                HomeScreenCompact()
-            }
-            else {
-                HomeScreenCompact(
-                    navigateToHelpScreen = navigateToHelpScreen,
-                    navigateToSettingsScreen = navigateToSettingsScreen,
-                    navigateToAboutScreen = navigateToAboutScreen
-                )
-            }
+            HomeScreenCompact(
+                navigateToHelpScreen = navigateToHelpScreen,
+                navigateToSettingsScreen = navigateToSettingsScreen,
+                navigateToAboutScreen = navigateToAboutScreen
+            )
         }
         WindowWidthSizeClass.Medium -> {
-            HomeScreenMedium()
+            HomeScreenMedium(
+                navigateToHelpScreen = navigateToHelpScreen,
+                navigateToSettingsScreen = navigateToSettingsScreen,
+                navigateToAboutScreen = navigateToAboutScreen
+            )
         }
         WindowWidthSizeClass.Expanded -> {
-            HomeScreenExpanded()
+            HomeScreenMedium(
+                navigateToHelpScreen = navigateToHelpScreen,
+                navigateToSettingsScreen = navigateToSettingsScreen,
+                navigateToAboutScreen = navigateToAboutScreen
+            )
         }
     }
 }
@@ -138,11 +207,23 @@ fun HomeScreen(
  * Prikitiws
  */
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-@Preview(name = "Compact screen portrait", device = "spec:width=411dp,height=891dp")
+@Preview(
+    name = "Compact screen",
+    device = "spec:width=411dp,height=891dp",
+    showSystemUi = true
+)
 @Composable
 fun HomeScreenCompactPreview() {
-    HomeScreen(
-        isLandscape = false,
-        windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(411.dp, 891.dp))
-    )
+    HomeScreenCompact()
+}
+
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@Preview(
+    name = "Medium screen",
+    device = "spec:width=411dp,height=891dp,orientation=landscape",
+    showSystemUi = true
+)
+@Composable
+fun HomeScreenMediumPreview() {
+    HomeScreenMedium()
 }

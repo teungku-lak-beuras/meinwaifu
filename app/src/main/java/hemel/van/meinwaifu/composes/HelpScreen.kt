@@ -50,19 +50,13 @@ fun HelpScreenCompact(
 @Composable
 fun HelpScreen(
     navigateToHomeScreen: () -> Unit = {},
-    isLandscape: Boolean,
     windowSizeClass: WindowSizeClass
 ) {
     when (windowSizeClass.widthSizeClass) {
         WindowWidthSizeClass.Compact -> {
-            if (isLandscape) {
-                HelpScreenCompact()
-            }
-            else {
-                HelpScreenCompact(
-                    navigateToHomeScreen = navigateToHomeScreen
-                )
-            }
+            HelpScreenCompact(
+                navigateToHomeScreen = navigateToHomeScreen
+            )
         }
         WindowWidthSizeClass.Medium -> {
             HelpScreenCompact()
@@ -81,7 +75,6 @@ fun HelpScreen(
 @Composable
 fun HelpScreenCompactPreview() {
     HelpScreen(
-        isLandscape = false,
         windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(411.dp, 891.dp))
     )
 }

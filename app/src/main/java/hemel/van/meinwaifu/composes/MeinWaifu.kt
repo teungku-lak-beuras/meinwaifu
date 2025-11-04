@@ -10,7 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun MeinWaifu(isLandscape: Boolean, windowSizeClass: WindowSizeClass) {
+fun MeinWaifu(windowSizeClass: WindowSizeClass) {
     val navController = rememberNavController()
 
     NavHost(
@@ -39,7 +39,6 @@ fun MeinWaifu(isLandscape: Boolean, windowSizeClass: WindowSizeClass) {
     ) {
         composable("home") {
             HomeScreen(
-                isLandscape = isLandscape,
                 windowSizeClass = windowSizeClass,
                 navigateToHelpScreen = {
                     navController.navigate("help")
@@ -48,7 +47,6 @@ fun MeinWaifu(isLandscape: Boolean, windowSizeClass: WindowSizeClass) {
         }
         composable("help") {
             HelpScreen(
-                isLandscape = isLandscape,
                 windowSizeClass = windowSizeClass,
                 navigateToHomeScreen = {
                     navController.popBackStack()
