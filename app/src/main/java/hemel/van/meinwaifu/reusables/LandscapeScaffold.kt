@@ -42,18 +42,16 @@ fun LandscapeScaffold(
                 .displayCutoutPadding(),
             color = MaterialTheme.colorScheme.background
         ) {
-            Row {
-                Box(
-                    modifier = Modifier
-                        .statusBarsPadding()
-                        .navigationBarsPadding()
-                ) {
+            Row(
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .navigationBarsPadding()
+            ) {
+                Box {
                     sideBar.invoke()
                 }
                 Column(
                     modifier = Modifier
-                        .statusBarsPadding()
-                        .navigationBarsPadding()
                         .fillMaxSize()
                 ) {
                     content.invoke()
