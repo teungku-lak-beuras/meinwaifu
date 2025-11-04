@@ -3,10 +3,12 @@ package hemel.van.meinwaifu.reusables
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
@@ -29,36 +31,41 @@ import hemel.van.meinwaifu.composes.HomeScreenCompactContent
  */
 @Composable
 fun LandscapeScaffold(
-    sideBar: @Composable (() -> Unit),
+    sideAppBar: @Composable (() -> Unit),
     content: @Composable (() -> Unit)
 ) {
     Surface(
         modifier = Modifier
             .fillMaxSize(),
         color = MaterialTheme.colorScheme.primary,
-    ) {
-        Surface(
-            modifier = Modifier
-                .displayCutoutPadding(),
-            color = MaterialTheme.colorScheme.background
-        ) {
-            Row(
+        content = {
+            Surface(
                 modifier = Modifier
-                    .statusBarsPadding()
-                    .navigationBarsPadding()
-            ) {
-                Box {
-                    sideBar.invoke()
+                    .displayCutoutPadding(),
+                color = MaterialTheme.colorScheme.background,
+                content = {
+                    Row(
+                        modifier = Modifier
+                            .windowInsetsPadding(WindowInsets.statusBars)
+                            .windowInsetsPadding(WindowInsets.navigationBars),
+                        content = {
+                            Box(
+                                content = {
+                                    sideAppBar.invoke()
+                                }
+                            )
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                            ) {
+                                content.invoke()
+                            }
+                        }
+                    )
                 }
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                ) {
-                    content.invoke()
-                }
-            }
+            )
         }
-    }
+    )
 }
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
@@ -70,7 +77,7 @@ fun LandscapeScaffold(
 @Composable
 fun LandscapeScaffoldPreview() {
     LandscapeScaffold(
-        sideBar = {
+        sideAppBar = {
             MeinSideAppBar(
                 logo = painterResource(R.drawable.main_icon_square),
                 logoContentDescription = stringResource(R.string.app_bar_navigation_icon),

@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -52,9 +51,10 @@ fun MeinTopAppBar(
 ) {
     Surface(
         modifier = Modifier
-            .systemBarsPadding()
             .fillMaxWidth()
             .height(72.dp),
+        tonalElevation = 8.dp,
+        shadowElevation = 8.dp,
         color = MaterialTheme.colorScheme.primary,
         shape = RoundedCornerShape(
             topStart = 0.dp,

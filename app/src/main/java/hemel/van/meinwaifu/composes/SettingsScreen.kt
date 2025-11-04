@@ -52,7 +52,7 @@ fun SettingsScreenMedium(
     navigateToHomeScreen: () -> Unit
 ) {
     LandscapeScaffold(
-        sideBar = {
+        sideAppBar = {
             MeinSideAppBar(
                 logo = painterResource(R.drawable.main_icon_square),
                 logoContentDescription = stringResource(R.string.navigate_to_screen_home),

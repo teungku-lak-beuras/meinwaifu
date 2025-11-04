@@ -52,7 +52,7 @@ fun HelpScreenMedium(
     navigateToHomeScreen: () -> Unit
 ) {
     LandscapeScaffold(
-        sideBar = {
+        sideAppBar = {
             MeinSideAppBar(
                 logo =  painterResource(R.drawable.main_icon_square),
                 logoContentDescription = stringResource(R.string.screen_home),
