@@ -31,10 +31,11 @@ fun PortraitScaffold(
     )
     Box(
         modifier = Modifier
-            .padding(top = 72.dp)
-            .padding(horizontal = 16.dp)
             .windowInsetsPadding(WindowInsets.statusBars)
-            .windowInsetsPadding(WindowInsets.navigationBars),
+            .windowInsetsPadding(WindowInsets.navigationBars)
+            .padding(top = 72.dp) // MeinTopAppBar height.
+            .padding(top = 16.dp) // Content padding to MeinTopAppBar.
+            .padding(horizontal = 16.dp),
         content = {
             content.invoke()
             ScaffoldDefaults.contentWindowInsets
