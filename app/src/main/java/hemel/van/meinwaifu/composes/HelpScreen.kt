@@ -1,8 +1,6 @@
 package hemel.van.meinwaifu.composes
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -15,40 +13,41 @@ import hemel.van.meinwaifu.R
 import hemel.van.meinwaifu.reusables.LandscapeScaffold
 import hemel.van.meinwaifu.reusables.MeinSideAppBar
 import hemel.van.meinwaifu.reusables.MeinTopAppBar
+import hemel.van.meinwaifu.reusables.PortraitScaffold
 
 @Composable
 fun HelpScreenCompactContent(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
-    ) {
-        Text("Help screen is under construction... :-D")
-    }
+        modifier = modifier,
+        content = {
+            Text("Help screen is under construction... :-D")
+        }
+    )
 }
 
 @Composable
 fun HelpScreenCompact(
-    modifier: Modifier = Modifier,
     navigateToHomeScreen: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
+    PortraitScaffold(
+        topAppBar = {
             MeinTopAppBar(
                 title = stringResource(R.string.screen_help),
                 logo = painterResource(R.drawable.main_icon_square),
                 logoContentDescription = stringResource(R.string.navigate_to_screen_home),
                 logoCallback = navigateToHomeScreen
             )
+        },
+        content = {
+            HelpScreenCompactContent()
         }
-    ) { paddingValues ->
-        HelpScreenCompactContent(modifier = modifier.padding(paddingValues))
-    }
+    )
 }
 
 @Composable
 fun HelpScreenMedium(
-    modifier: Modifier = Modifier,
     navigateToHomeScreen: () -> Unit
 ) {
     LandscapeScaffold(

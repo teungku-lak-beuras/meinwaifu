@@ -1,8 +1,6 @@
 package hemel.van.meinwaifu.composes
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -15,40 +13,41 @@ import hemel.van.meinwaifu.R
 import hemel.van.meinwaifu.reusables.LandscapeScaffold
 import hemel.van.meinwaifu.reusables.MeinSideAppBar
 import hemel.van.meinwaifu.reusables.MeinTopAppBar
+import hemel.van.meinwaifu.reusables.PortraitScaffold
 
 @Composable
 fun SettingsScreenCompactContent(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
-    ){
-        Text("Settings screen is under construction... :-D")
-    }
+        modifier = modifier,
+        content = {
+            Text("Settings screen is under construction... :-D")
+        }
+    )
 }
 
 @Composable
 fun SettingsScreenCompact(
-    modifier: Modifier = Modifier,
     navigateToHomeScreen: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
+    PortraitScaffold(
+        topAppBar = {
             MeinTopAppBar(
                 title = stringResource(R.string.screen_settings),
                 logo = painterResource(R.drawable.main_icon_square),
                 logoContentDescription = stringResource(R.string.navigate_to_screen_home),
                 logoCallback = navigateToHomeScreen
             )
+        },
+        content = {
+            SettingsScreenCompactContent()
         }
-    ) { paddingValues ->
-        SettingsScreenCompactContent(modifier = modifier.padding(paddingValues))
-    }
+    )
 }
 
 @Composable
 fun SettingsScreenMedium(
-    modifier: Modifier = Modifier,
     navigateToHomeScreen: () -> Unit
 ) {
     LandscapeScaffold(
@@ -96,13 +95,21 @@ fun SettingsScreen(
 /**
  * Prikitiws.
  */
-@Preview(name = "Compact screen", device = "spec:width=411dp,height=891dp")
+@Preview(
+    name = "Compact screen",
+    device = "spec:width=411dp,height=891dp",
+    showSystemUi = true
+)
 @Composable
 fun SettingsScreenCompactPreview() {
     SettingsScreenCompact {}
 }
 
-@Preview(name = "Medium screen", device = "spec:width=411dp,height=891dp,orientation=landscape")
+@Preview(
+    name = "Medium screen",
+    device = "spec:width=411dp,height=891dp,orientation=landscape",
+    showSystemUi = true
+)
 @Composable
 fun SettingsScreenMediumPreview() {
     SettingsScreenMedium {}

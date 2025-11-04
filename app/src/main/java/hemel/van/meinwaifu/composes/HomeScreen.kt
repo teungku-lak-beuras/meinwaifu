@@ -76,10 +76,11 @@ fun HomeScreenCompactContent(
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize()
-    ) {
-        Text("Hello world!")
-    }
+            .fillMaxSize(),
+        content = {
+            Text("Hello world!")
+        }
+    )
 }
 
 @Composable
