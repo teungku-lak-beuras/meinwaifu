@@ -17,37 +17,37 @@ import hemel.van.meinwaifu.reusables.MeinSideAppBar
 import hemel.van.meinwaifu.reusables.MeinTopAppBar
 
 @Composable
-fun SettingsScreenCompactContent(
+fun AboutScreenCompactContent(
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
-    ){
-        Text("Settings screen is under construction... :-D")
+    ) {
+        Text("About screen is under construction... :-D")
     }
 }
 
 @Composable
-fun SettingsScreenCompact(
+fun AboutScreenCompact(
     modifier: Modifier = Modifier,
     navigateToHomeScreen: () -> Unit
 ) {
     Scaffold(
         topBar = {
             MeinTopAppBar(
-                title = stringResource(R.string.screen_settings),
+                title = stringResource(R.string.screen_about),
                 logo = painterResource(R.drawable.main_icon_square),
                 logoContentDescription = stringResource(R.string.navigate_to_screen_home),
                 logoCallback = navigateToHomeScreen
             )
         }
     ) { paddingValues ->
-        SettingsScreenCompactContent(modifier = modifier.padding(paddingValues))
+        AboutScreenCompactContent(modifier = modifier.padding(paddingValues))
     }
 }
 
 @Composable
-fun SettingsScreenMedium(
+fun AboutScreenMedium(
     modifier: Modifier = Modifier,
     navigateToHomeScreen: () -> Unit
 ) {
@@ -60,33 +60,29 @@ fun SettingsScreenMedium(
             )
         },
         content = {
-            SettingsScreenCompactContent()
+            AboutScreenCompactContent()
         }
     )
 }
 
 @Composable
-fun SettingsScreenExpanded() {}
-
-@Composable
-fun SettingsScreen(
+fun AboutScreen(
     windowSizeClass: WindowSizeClass,
     navigateToHomeScreen: () -> Unit
 ) {
     when (windowSizeClass.widthSizeClass) {
         WindowWidthSizeClass.Compact -> {
-            SettingsScreenCompact(
+            AboutScreenCompact(
                 navigateToHomeScreen = navigateToHomeScreen
             )
         }
         WindowWidthSizeClass.Medium -> {
-            SettingsScreenMedium(
+            AboutScreenMedium(
                 navigateToHomeScreen = navigateToHomeScreen
             )
         }
-
         WindowWidthSizeClass.Expanded -> {
-            SettingsScreenMedium(
+            AboutScreenMedium(
                 navigateToHomeScreen = navigateToHomeScreen
             )
         }
@@ -98,12 +94,12 @@ fun SettingsScreen(
  */
 @Preview(name = "Compact screen", device = "spec:width=411dp,height=891dp")
 @Composable
-fun SettingsScreenCompactPreview() {
-    SettingsScreenCompact {}
+fun AboutScreenCompactPreview() {
+    AboutScreenCompact {}
 }
 
-@Preview(name = "Medium screen", device = "spec:width=411dp,height=891dp,orientation=landscape")
+@Preview(device = "spec:width=411dp,height=891dp,orientation=landscape")
 @Composable
-fun SettingsScreenMediumPreview() {
-    SettingsScreenMedium {}
+fun AboutScreenMediumPreview() {
+    AboutScreenMedium {}
 }

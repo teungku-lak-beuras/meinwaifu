@@ -46,7 +46,9 @@ fun MeinWaifu(windowSizeClass: WindowSizeClass) {
                 navigateToSettingsScreen = {
                     navController.navigate("settings")
                 },
-                navigateToAboutScreen = {}
+                navigateToAboutScreen = {
+                    navController.navigate("about")
+                }
             )
         }
         composable("help") {
@@ -59,6 +61,14 @@ fun MeinWaifu(windowSizeClass: WindowSizeClass) {
         }
         composable("settings") {
             SettingsScreen(
+                windowSizeClass = windowSizeClass,
+                navigateToHomeScreen = {
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable("about") {
+            AboutScreen(
                 windowSizeClass = windowSizeClass,
                 navigateToHomeScreen = {
                     navController.popBackStack()

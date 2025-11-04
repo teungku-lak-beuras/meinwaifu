@@ -4,7 +4,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DropdownMenu
@@ -90,7 +89,6 @@ fun HomeScreenCompact(
     navigateToAboutScreen: () -> Unit = {}
 ) {
     Scaffold(
-        modifier = Modifier.systemBarsPadding(),
         topBar = {
             MeinTopAppBar(
                 title = stringResource(R.string.screen_home),
