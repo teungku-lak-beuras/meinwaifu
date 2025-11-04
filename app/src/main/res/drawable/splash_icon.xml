@@ -29,7 +29,7 @@
     </item>
     <item
         android:height="200dp"
-        android:width="200dp"
+        android:width="170dp"
         android:drawable="@drawable/main_icon"
         android:gravity="center"/>
 </layer-list>
