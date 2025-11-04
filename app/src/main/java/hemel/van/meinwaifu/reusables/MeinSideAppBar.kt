@@ -41,7 +41,6 @@ import hemel.van.meinwaifu.R
  */
 @Composable
 fun MeinSideAppBar(
-    title: String,
     logo: Painter,
     logoContentDescription: String,
     logoCallback: (() -> Unit) = {},
@@ -99,7 +98,6 @@ fun MeinSideAppBar(
 @Composable
 fun MeinSideAppBarWithoutDropdownPreview() {
     MeinSideAppBar(
-        title = "Example string",
         logo = painterResource(R.drawable.main_icon_square),
         logoContentDescription = "Example string",
     )
@@ -109,7 +107,6 @@ fun MeinSideAppBarWithoutDropdownPreview() {
 @Composable
 fun MeinSideAppBarWithDropdownPreview() {
     MeinSideAppBar(
-        title = "Example string",
         logo = painterResource(R.drawable.main_icon_square),
         logoContentDescription = "Example string",
         dropDown = {
