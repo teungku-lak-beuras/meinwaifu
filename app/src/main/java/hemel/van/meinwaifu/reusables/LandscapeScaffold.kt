@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -52,7 +51,10 @@ fun LandscapeScaffold(
                     sideBar.invoke()
                 }
                 Column(
-                    modifier = Modifier.safeContentPadding()
+                    modifier = Modifier
+                        .statusBarsPadding()
+                        .navigationBarsPadding()
+                        .fillMaxSize()
                 ) {
                     content.invoke()
                 }
