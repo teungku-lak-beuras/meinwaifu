@@ -15,7 +15,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -176,7 +175,6 @@ fun HomeScreen(
 /**
  * Prikitiws
  */
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Preview(
     name = "Compact screen",
     device = "spec:width=411dp,height=891dp",
@@ -187,7 +185,6 @@ fun HomeScreenCompactPreview() {
     HomeScreenCompact()
 }
 
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Preview(
     name = "Medium screen",
     device = "spec:width=411dp,height=891dp,orientation=landscape",

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -12,9 +11,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.dp
 import hemel.van.meinwaifu.R
+import hemel.van.meinwaifu.reusables.LandscapeScaffold
+import hemel.van.meinwaifu.reusables.MeinSideAppBar
 import hemel.van.meinwaifu.reusables.MeinTopAppBar
 
 @Composable
@@ -31,7 +30,7 @@ fun HelpScreenCompactContent(
 @Composable
 fun HelpScreenCompact(
     modifier: Modifier = Modifier,
-    navigateToHomeScreen: () -> Unit = {}
+    navigateToHomeScreen: () -> Unit
 ) {
     Scaffold(
         topBar = {
@@ -48,6 +47,25 @@ fun HelpScreenCompact(
 }
 
 @Composable
+fun HelpScreenMedium(
+    modifier: Modifier = Modifier,
+    navigateToHomeScreen: () -> Unit
+) {
+    LandscapeScaffold(
+        sideBar = {
+            MeinSideAppBar(
+                logo =  painterResource(R.drawable.main_icon_square),
+                logoContentDescription = stringResource(R.string.screen_home),
+                logoCallback = navigateToHomeScreen
+            )
+        },
+        content = {
+            HelpScreenCompactContent()
+        }
+    )
+}
+
+@Composable
 fun HelpScreen(
     navigateToHomeScreen: () -> Unit = {},
     windowSizeClass: WindowSizeClass
@@ -59,10 +77,14 @@ fun HelpScreen(
             )
         }
         WindowWidthSizeClass.Medium -> {
-            HelpScreenCompact()
+            HelpScreenMedium(
+                navigateToHomeScreen = navigateToHomeScreen
+            )
         }
         WindowWidthSizeClass.Expanded -> {
-            HelpScreenCompact()
+            HelpScreenMedium(
+                navigateToHomeScreen = navigateToHomeScreen
+            )
         }
     }
 }
@@ -70,11 +92,22 @@ fun HelpScreen(
 /**
  * Prikitiws
  */
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-@Preview(device = "spec:width=411dp,height=891dp")
+@Preview(
+    name = "Compact screen",
+    device = "spec:width=411dp,height=891dp",
+    showSystemUi = true
+)
 @Composable
 fun HelpScreenCompactPreview() {
-    HelpScreen(
-        windowSizeClass = WindowSizeClass.calculateFromSize(DpSize(411.dp, 891.dp))
-    )
+    HelpScreenCompact {}
+}
+
+@Preview(
+    name = "Medium screen",
+    device = "spec:width=891dp,height=411dp",
+    showSystemUi = true
+)
+@Composable
+fun HelpScreenMediumPreview() {
+    HelpScreenMedium {}
 }
