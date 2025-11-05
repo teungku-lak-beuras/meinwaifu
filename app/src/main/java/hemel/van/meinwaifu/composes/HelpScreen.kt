@@ -67,7 +67,7 @@ fun HelpScreenMedium(
 @Composable
 fun HelpScreen(
     windowSizeClass: WindowSizeClass,
-    navigateToHomeScreen: () -> Unit = {}
+    navigateToHomeScreen: () -> Unit
 ) {
     when (windowSizeClass.widthSizeClass) {
         WindowWidthSizeClass.Compact -> {

@@ -85,9 +85,9 @@ fun HomeScreenCompactContent(
 
 @Composable
 fun HomeScreenCompact(
-    navigateToHelpScreen: () -> Unit = {},
-    navigateToSettingsScreen: () -> Unit = {},
-    navigateToAboutScreen: () -> Unit = {}
+    navigateToHelpScreen: () -> Unit,
+    navigateToSettingsScreen: () -> Unit,
+    navigateToAboutScreen: () -> Unit
 ) {
     PortraitScaffold(
         topAppBar = {
@@ -112,9 +112,9 @@ fun HomeScreenCompact(
 
 @Composable
 fun HomeScreenMedium(
-    navigateToHelpScreen: () -> Unit = {},
-    navigateToSettingsScreen: () -> Unit = {},
-    navigateToAboutScreen: () -> Unit = {}
+    navigateToHelpScreen: () -> Unit,
+    navigateToSettingsScreen: () -> Unit,
+    navigateToAboutScreen: () -> Unit
 ) {
     LandscapeScaffold(
         sideAppBar = {
@@ -182,7 +182,7 @@ fun HomeScreen(
 )
 @Composable
 fun HomeScreenCompactPreview() {
-    HomeScreenCompact()
+    HomeScreenCompact({}, {}, {})
 }
 
 @Preview(
@@ -192,5 +192,5 @@ fun HomeScreenCompactPreview() {
 )
 @Composable
 fun HomeScreenMediumPreview() {
-    HomeScreenMedium()
+    HomeScreenMedium({}, {}, {})
 }
