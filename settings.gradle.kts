@@ -23,4 +23,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Mein Waifu"
 include(":app")
-include(":meinremote")
+include(":meincore:network")

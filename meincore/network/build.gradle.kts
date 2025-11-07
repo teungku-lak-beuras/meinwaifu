@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "hemel.van.meinremote"
+    namespace = "hemel.van.meincore.network"
 
     compileSdk {
         version = release(36)
@@ -25,7 +25,7 @@ android {
 }
 
 dependencies {
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")                                         // Retrofit.
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")                                   // Retrofit serialiser.
+    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")                               // Logging interceptor.
 }
