@@ -1,7 +1,3 @@
-/*
- * List of plug-ins:
- */
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -58,29 +54,32 @@ android {
 // FUCK YOU TOML!!!
 //noinspection UseTomlInstead
 dependencies {
-    // Splash screen.
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.core:core-ktx:1.17.0")                                                 // AndroidX Core component.
+    implementation("androidx.core:core-splashscreen:1.0.1")                                         // AndroidX Core component.
 
-    val composeBom = platform("androidx.compose:compose-bom:2025.10.01")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")                         // AndroidX test component.
+    androidTestImplementation("androidx.test.ext:junit:1.3.0")                                      // AndroidX test component.
+    testImplementation("junit:junit:4.13.2")                                                        // AndroidX test component.
 
-    implementation(composeBom)
-    implementation("androidx.core:core-ktx:1.17.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
-    implementation("androidx.navigation:navigation-compose:2.9.5")
-    implementation("androidx.activity:activity-compose:1.11.0")
-    implementation("androidx.compose.ui:ui:1.9.4")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.9.4")
-    implementation("androidx.compose.material3:material3:1.4.0")
-    implementation("androidx.compose.material:material-icons-extended:1.7.8")
-    implementation("androidx.compose.material3:material3-window-size-class:1.4.0")
-    implementation("com.google.android.material:material:1.13.0")
+    implementation("androidx.navigation:navigation-compose:2.9.5")                                  // AndroidX NavHost support.
 
-    debugImplementation("androidx.compose.ui:ui-tooling")
+    implementation("com.google.android.material:material:1.13.0")                                   // Google Material 3.
 
-    androidTestImplementation(composeBom)
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
-    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    val composeBom = platform("androidx.compose:compose-bom:2025.10.01")                            // Compose B.O.M.
+    implementation(composeBom)                                                                      // Compose B.O.M.
+    androidTestImplementation(composeBom)                                                           // Compose B.O.M.
 
-    testImplementation("junit:junit:4.13.2")
+    implementation("androidx.compose.material:material-icons-core")                                 // Compose Icon.
+    implementation("androidx.compose.material3:material3")                                          // Compose Material 3 components.
+    implementation("androidx.compose.material3:material3-window-size-class")                        // Compose WindowSizeClass.
+
+    implementation("androidx.compose.ui:ui-tooling-preview")                                        // Compose preview support in Android Studio.
+    debugImplementation("androidx.compose.ui:ui-tooling")                                           // Compose preview support in Android Studio.
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")                                 // Compose UI Test.
+    debugImplementation("androidx.compose.ui:ui-test-manifest")                                     // Compose UI Test.
+
+    implementation("androidx.activity:activity-compose:1.11.0")                                     // Compose integration with activity.
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")                          // Compose integration with view model.
+    implementation("androidx.compose.runtime:runtime-livedata")                                     // Compose integration with live data.
 }
