@@ -1,7 +1,7 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.com.android.application)
+    alias(libs.plugins.org.jetbrains.kotlin.android)
+    alias(libs.plugins.org.jetbrains.kotlin.plugin.compose)
 }
 
 android {
@@ -45,35 +45,31 @@ android {
     }
 }
 
-// FUCK YOU TOML!!!
-//noinspection UseTomlInstead
 dependencies {
-    implementation("androidx.core:core-ktx:1.17.0")                                                 // AndroidX Core component.
-    implementation("androidx.core:core-splashscreen:1.0.1")                                         // AndroidX Core component.
+    implementation(libs.androidx.core.ktx)                                                          // AndroidX Core component.
+    implementation(libs.androidx.core.splashscreen)                                                 // AndroidX Core component.
 
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")                         // AndroidX test component.
-    androidTestImplementation("androidx.test.ext:junit:1.3.0")                                      // AndroidX test component.
-    testImplementation("junit:junit:4.13.2")                                                        // AndroidX test component.
+    androidTestImplementation(libs.androidx.espresso.core)                                          // AndroidX test component.
+    androidTestImplementation(libs.androidx.junit)                                                  // AndroidX test component.
+    testImplementation(libs.junit)                                                                  // AndroidX test component.
 
-    implementation("androidx.navigation:navigation-compose:2.9.5")                                  // AndroidX NavHost support.
+    implementation(libs.androidx.navigation.compose)                                                // AndroidX NavHost support.
 
-    implementation("com.google.android.material:material:1.13.0")                                   // Google Material 3.
+    implementation(libs.material)                                                                   // Google Material 3.
 
-    val composeBom = platform("androidx.compose:compose-bom:2025.10.01")                            // Compose B.O.M.
-    implementation(composeBom)                                                                      // Compose B.O.M.
-    androidTestImplementation(composeBom)                                                           // Compose B.O.M.
+    androidTestImplementation(platform(libs.androidx.compose.bom))                                  // Compose B.O.M.
 
-    implementation("androidx.compose.material:material-icons-core")                                 // Compose Icon.
-    implementation("androidx.compose.material3:material3")                                          // Compose Material 3 components.
-    implementation("androidx.compose.material3:material3-window-size-class")                        // Compose WindowSizeClass.
+    implementation(libs.androidx.compose.material.icons.core)                                       // Compose Icon.
+    implementation(libs.androidx.compose.material3)                                                 // Compose Material 3 components.
+    implementation(libs.androidx.compose.material3.window.size.class1)                              // Compose WindowSizeClass.
 
-    implementation("androidx.compose.ui:ui-tooling-preview")                                        // Compose preview support in Android Studio.
-    debugImplementation("androidx.compose.ui:ui-tooling")                                           // Compose preview support in Android Studio.
+    implementation(libs.androidx.compose.ui.tooling.preview)                                        // Compose preview support in Android Studio.
+    debugImplementation(libs.androidx.compose.ui.tooling)                                           // Compose preview support in Android Studio.
 
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")                                 // Compose UI Test.
-    debugImplementation("androidx.compose.ui:ui-test-manifest")                                     // Compose UI Test.
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)                                 // Compose UI Test.
+    debugImplementation(libs.androidx.compose.ui.test.manifest)                                     // Compose UI Test.
 
-    implementation("androidx.activity:activity-compose:1.11.0")                                     // Compose integration with activity.
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.5")                          // Compose integration with view model.
-    implementation("androidx.compose.runtime:runtime-livedata")                                     // Compose integration with live data.
+    implementation(libs.androidx.activity.compose)                                                  // Compose integration with activity.
+    implementation(libs.androidx.lifecycle.viewmodel.compose)                                       // Compose integration with view model.
+    implementation(libs.androidx.compose.runtime.livedata)                                          // Compose integration with live data.
 }
