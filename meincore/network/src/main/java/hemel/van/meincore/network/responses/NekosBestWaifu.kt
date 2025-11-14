@@ -1,12 +1,8 @@
-package hemel.van.meinwaifu.remote.models
+package hemel.van.meincore.network.responses
 
 import com.google.gson.annotations.SerializedName
 
-data class NekosBestWaifuModel(
-    @field:SerializedName("results") val results: List<Waifu>
-)
-
-data class Waifu(
+data class NekosBestWaifu(
     @field:SerializedName("artist_href") val artistHref: String,
     @field:SerializedName("artist_name") val artistName: String,
     @field:SerializedName("source_url") val sourceUrl: String,

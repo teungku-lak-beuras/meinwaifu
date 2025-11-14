@@ -1,4 +1,9 @@
 package hemel.van.meinwaifu.viewmodels
 
-class MainViewModel {
+import androidx.lifecycle.ViewModel
+import hemel.van.meincore.repository.NekosBestApiRepository
+
+class MainViewModel(
+    private val nekosBestApiRepository: NekosBestApiRepository
+) : ViewModel() {
 }

@@ -14,18 +14,33 @@ android {
         buildConfig = true
     }
 
+    buildTypes {
+        val nekosBestApiEndPoint = "https://nekos.best/api/v2/"
+
+        debug {
+            buildConfigField("String", "NEKOS_BEST_API", "\"$nekosBestApiEndPoint\"")
+        }
+
+        release {
+            buildConfigField("String", "NEKOS_BEST_API", "\"$nekosBestApiEndPoint\"")
+        }
+    }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
 }
 
 dependencies {
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")                                         // Retrofit.
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")                                   // Retrofit serialiser.
-    implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")                               // Logging interceptor.
+
+    implementation(project(":meincore:entity"))
+    implementation(libs.kotlinx.coroutines.android) // Kotlin Coroutines.
+    implementation(libs.retrofit)                   // Retrofit.
+    implementation(libs.converter.gson)             // Retrofit serialiser.
+    implementation(libs.logging.interceptor)        // Logging interceptor.
 }

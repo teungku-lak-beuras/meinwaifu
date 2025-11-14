@@ -1,4 +1,4 @@
-package hemel.van.meincore.network.config
+package hemel.van.meincore.network.configurations
 
 import hemel.van.meincore.network.BuildConfig
 import hemel.van.meincore.network.service.NekosBestApiService
@@ -7,7 +7,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class NekosBestApiConfig {
+class NekosBestApiConfiguration {
     companion object {
         fun getApiService(): NekosBestApiService {
             val loggingInterceptor = when(BuildConfig.DEBUG) {
@@ -18,7 +18,7 @@ class NekosBestApiConfig {
                 .addInterceptor(loggingInterceptor)
                 .build()
             val retrofit = Retrofit.Builder()
-                .baseUrl("https://nekos.best/api/v2/")
+                .baseUrl(BuildConfig.NEKOS_BEST_API)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
