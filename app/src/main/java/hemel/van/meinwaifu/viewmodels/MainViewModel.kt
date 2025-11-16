@@ -19,7 +19,7 @@ class MainViewModel(
         getWaifu()
     }
 
-    fun getWaifu(amount: Int = 15) = viewModelScope.launch {
+    fun getWaifu(amount: Int = 16) = viewModelScope.launch {
         nekosBestApiRepository.getWaifu(amount = amount).collect { collecter ->
             _nekosBestWaifus.value = collecter
         }

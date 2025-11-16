@@ -1,21 +1,17 @@
 package hemel.van.meinwaifu.reusables
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.ScaffoldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import hemel.van.meinwaifu.R
+import hemel.van.meinwaifu.composes.ContentLoading
 
 @Composable
 fun PortraitScaffold(
@@ -24,21 +20,17 @@ fun PortraitScaffold(
 ) {
     Box(
         modifier = Modifier
-            .windowInsetsPadding(WindowInsets.statusBars),
+            .windowInsetsPadding(WindowInsets.statusBars)
+            .windowInsetsPadding(WindowInsets.navigationBars)
+            .fillMaxSize(),
         content = {
-            topAppBar.invoke()
+            content.invoke()
         }
     )
     Box(
-        modifier = Modifier
-            .windowInsetsPadding(WindowInsets.statusBars)
-            .windowInsetsPadding(WindowInsets.navigationBars)
-            .padding(top = 72.dp) // MeinTopAppBar height.
-            .padding(top = 16.dp) // Content padding to MeinTopAppBar.
-            .padding(horizontal = 16.dp),
+        modifier = Modifier.windowInsetsPadding(WindowInsets.statusBars),
         content = {
-            content.invoke()
-            ScaffoldDefaults.contentWindowInsets
+            topAppBar.invoke()
         }
     )
 }
@@ -55,11 +47,7 @@ fun PortraitScaffoldPreview() {
             )
         },
         content = {
-            Column(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                Text("This is example text.")
-            }
+            ContentLoading()
         }
     )
 }

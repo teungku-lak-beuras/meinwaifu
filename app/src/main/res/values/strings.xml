@@ -13,4 +13,8 @@
     <string name="navigate_to_screen_help">Navigate to help screen.</string>
     <string name="navigate_to_screen_settings">Navigate to settings screen.</string>
     <string name="navigate_to_screen_about">Navigate to about screen.</string>
+
+    <string name="fetching">Contacting the API…</string>
+    <string name="loading">Loading…</string>
+    <string name="error">Error! x-D</string>
 </resources>

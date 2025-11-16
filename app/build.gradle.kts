@@ -65,7 +65,10 @@ dependencies {
 
     implementation(libs.material)                                                                   // Google Material 3.
 
-    androidTestImplementation(platform(libs.androidx.compose.bom))                                  // Compose B.O.M.
+    androidTestImplementation(platform(libs.androidx.compose.bom))                                  // Compose B.O.M. for Junit, etc.
+    implementation(platform(libs.androidx.compose.bom))                                             // Compose B.O.M.
+
+    implementation(libs.androidx.compose.foundation.layout)                                         // Drop shadow support.
 
     implementation(libs.androidx.compose.material.icons.core)                                       // Compose Icon.
     implementation(libs.androidx.compose.material3)                                                 // Compose Material 3 components.

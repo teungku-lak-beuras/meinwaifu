@@ -29,12 +29,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import hemel.van.meinwaifu.R
 
@@ -49,18 +52,27 @@ fun MeinTopAppBar(
     logoCallback: (() -> Unit) = {},
     dropDown: @Composable (() -> Unit) = {}
 ) {
+    val shape = RoundedCornerShape(
+        topStart = 0.dp,
+        topEnd = 0.dp,
+        bottomStart = 24.dp,
+        bottomEnd = 24.dp
+    )
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(72.dp),
-        shadowElevation = 8.dp,
-        color = MaterialTheme.colorScheme.primary,
-        shape = RoundedCornerShape(
-            topStart = 0.dp,
-            topEnd = 0.dp,
-            bottomStart = 24.dp,
-            bottomEnd = 24.dp
-        )
+            .height(72.dp)
+            .dropShadow(
+                shape = shape,
+                shadow = Shadow(
+                    radius = 8.dp,
+                    color = MaterialTheme.colorScheme.surfaceContainer,
+                    offset = DpOffset(0.dp, 2.dp)
+                )
+            )
+            .clip(shape = shape),
+        color = MaterialTheme.colorScheme.primary
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,

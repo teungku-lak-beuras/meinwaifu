@@ -6,6 +6,6 @@ import retrofit2.http.Query
 
 interface NekosBestApiService {
     @GET("waifu") suspend fun getWaifu(
-        @Query("amount") amount: Int = 15
+        @Query("amount") amount: Int
     ): NekosBestWaifuResponse
 }

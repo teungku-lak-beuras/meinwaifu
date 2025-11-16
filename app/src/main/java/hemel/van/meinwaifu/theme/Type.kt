@@ -47,12 +47,15 @@ val Typography = Typography(
         fontSize = 32.sp
     ),
     bodySmall = TextStyle(
-        fontFamily = fontFamily
+        fontFamily = fontFamily,
+        fontSize = 11.sp
     ),
     bodyMedium = TextStyle(
-        fontFamily = fontFamily
+        fontFamily = fontFamily,
+        fontSize = 12.sp
     ),
     bodyLarge = TextStyle(
-        fontFamily = fontFamily
+        fontFamily = fontFamily,
+        fontSize = 14.sp
     ),
 )
