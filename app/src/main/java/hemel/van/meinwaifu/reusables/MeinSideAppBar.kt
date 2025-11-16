@@ -51,6 +51,7 @@ fun MeinSideAppBar(
         modifier = Modifier
             .fillMaxHeight()
             .width(72.dp),
+        shadowElevation = 8.dp,
         color = MaterialTheme.colorScheme.primary,
         shape = RoundedCornerShape(
             topStart = 0.dp,

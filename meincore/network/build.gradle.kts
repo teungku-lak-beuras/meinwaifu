@@ -37,9 +37,6 @@ android {
 }
 
 dependencies {
-
-    implementation(project(":meincore:entity"))
-    implementation(libs.kotlinx.coroutines.android) // Kotlin Coroutines.
     implementation(libs.retrofit)                   // Retrofit.
     implementation(libs.converter.gson)             // Retrofit serialiser.
     implementation(libs.logging.interceptor)        // Logging interceptor.

@@ -27,7 +27,7 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -47,10 +47,12 @@ android {
 
 dependencies {
     implementation(project(":meincore:entity"))
-    implementation(project(":meincore:network"))
     implementation(project(":meincore:repository"))
 
-    implementation(libs.kotlinx.coroutines.android) // Kotlin Coroutines.
+    implementation(libs.kotlinx.coroutines.android)                                                 // Kotlin Coroutines.
+
+    implementation(libs.coil.compose)                                                               // Coil Compose.
+    implementation(libs.coil.network.okhttp)                                                        // Coil network fetcher.
 
     implementation(libs.androidx.core.ktx)                                                          // AndroidX Core component.
     implementation(libs.androidx.core.splashscreen)                                                 // AndroidX Core component.

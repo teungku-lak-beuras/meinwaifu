@@ -53,7 +53,6 @@ fun MeinTopAppBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(72.dp),
-        tonalElevation = 8.dp,
         shadowElevation = 8.dp,
         color = MaterialTheme.colorScheme.primary,
         shape = RoundedCornerShape(

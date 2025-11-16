@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import hemel.van.meinwaifu.R
-import hemel.van.meinwaifu.composes.HomeScreenCompactContent
+import hemel.van.meinwaifu.composes.ContentLoading
 
 /**
  * When in landscape mode and you are not being able to change screen's cutout color, use this
@@ -87,7 +87,7 @@ fun LandscapeScaffoldPreview() {
             )
         },
         content = {
-            HomeScreenCompactContent()
+            ContentLoading()
         }
     )
 }

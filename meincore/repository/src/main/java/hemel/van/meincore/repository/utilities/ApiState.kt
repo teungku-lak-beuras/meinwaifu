@@ -1,4 +1,4 @@
-package hemel.van.meincore.network.utilities
+package hemel.van.meincore.repository.utilities
 
 sealed class ApiState<out R> {
     data class Success<out T>(val data: T) : ApiState<T>()

@@ -3,8 +3,6 @@ package hemel.van.meinwaifu.viewmodels.factories
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import hemel.van.meincore.network.NekosBestApiDataSource
-import hemel.van.meincore.network.configurations.NekosBestApiConfiguration
 import hemel.van.meincore.repository.NekosBestApiRepository
 import hemel.van.meinwaifu.viewmodels.MainViewModel
 
@@ -18,11 +16,7 @@ class MainViewModelFactory(
         fun getInstance(context: Context): MainViewModelFactory = synchronized(this) {
             if (instance == null) {
                 instance = MainViewModelFactory(
-                    nekosBestApiRepository = NekosBestApiRepository(
-                        nekosBestApiDataSource = NekosBestApiDataSource(
-                            nekosBestApiService = NekosBestApiConfiguration.getApiService()
-                        )
-                    )
+                    nekosBestApiRepository = NekosBestApiRepository()
                 )
             }
 
