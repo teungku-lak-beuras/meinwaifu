@@ -17,4 +17,5 @@
     <string name="fetching">Contacting the API…</string>
     <string name="loading">Loading…</string>
     <string name="error">Error! x-D</string>
+    <string name="retry_in_3s">Retrying in 3 seconds…</string>
 </resources>

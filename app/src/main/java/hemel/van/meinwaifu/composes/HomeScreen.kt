@@ -31,8 +31,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -46,16 +48,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import coil3.compose.AsyncImagePainter
+import coil3.ImageLoader
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
 import coil3.compose.rememberConstraintsSizeResolver
-import coil3.imageLoader
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.util.DebugLogger
@@ -69,6 +71,8 @@ import hemel.van.meinwaifu.reusables.MeinTopAppBar
 import hemel.van.meinwaifu.reusables.PortraitScaffold
 import hemel.van.meinwaifu.viewmodels.MainViewModel
 import hemel.van.meinwaifu.viewmodels.factories.MainViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreenDropDown(
@@ -135,7 +139,9 @@ fun ContentLoading(loadingText: String = stringResource(R.string.loading)) {
 }
 
 @Composable
-fun ContentError() {
+fun ContentError(
+    additionalText: String? = null
+) {
     Surface(
         content = {
             Column(
@@ -153,6 +159,14 @@ fun ContentError() {
                     style = MaterialTheme.typography.bodyLarge,
                     text = stringResource(R.string.error)
                 )
+                if (additionalText != null) {
+                    Text(
+                        modifier= Modifier.padding(top = 8.dp),
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Center,
+                        text = additionalText
+                    )
+                }
             }
         }
     )
@@ -185,42 +199,55 @@ fun WaifuItem(nekosBestWaifuEntity: NekosBestWaifuEntity) {
         content = {
             Column(
                 content = {
-                    val imageLoader = LocalContext.current.imageLoader.newBuilder()
+                    val imageLoader = ImageLoader.Builder(LocalContext.current)
                         .logger(DebugLogger())
                         .build()
-                    val sizeResolver = rememberConstraintsSizeResolver()
+                    val imageRequest = ImageRequest.Builder(LocalContext.current)
+                        .data(nekosBestWaifuEntity.url)
+                        .crossfade(true)
+                        .build()
+                    var trigger by remember { mutableStateOf(false) }
 
-                    SubcomposeAsyncImage(
-                        modifier = Modifier
-                            .then(sizeResolver)
-                            .fillMaxWidth()
-                            .height(256.dp),
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(nekosBestWaifuEntity.url)
-                            .crossfade(true)
-                            .build(),
-                        filterQuality = FilterQuality.Medium,
-                        imageLoader = imageLoader,
-                        contentScale = ContentScale.Crop,
-                        contentDescription = "Waifu drawn by ${nekosBestWaifuEntity.artistName}",
-                        content = {
-                            val state by painter.state.collectAsState()
-
-                            when (state) {
-                                is AsyncImagePainter.State.Loading -> {
-                                    Box(
-                                        contentAlignment = Alignment.Center,
-                                        content = {
-                                            ContentLoading()
-                                            CircularProgressIndicator()
+                    key(trigger) {
+                        SubcomposeAsyncImage(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(256.dp)
+                                .then(rememberConstraintsSizeResolver()),
+                            model = imageRequest,
+                            filterQuality = FilterQuality.Medium,
+                            imageLoader = imageLoader,
+                            contentScale = ContentScale.Crop,
+                            contentDescription = "Waifu drawn by ${nekosBestWaifuEntity.artistName}",
+                            loading = {
+                                Box(
+                                    contentAlignment = Alignment.Center,
+                                    content = {
+                                        ContentLoading()
+                                        CircularProgressIndicator()
+                                    }
+                                )
+                            },
+                            success = {
+                                SubcomposeAsyncImageContent()
+                            },
+                            error = {
+                                ContentError(
+                                    additionalText = stringResource(R.string.retry_in_3s)
+                                )
+                                LaunchedEffect(
+                                    key1 = Unit,
+                                    block = {
+                                        launch(Dispatchers.Default) {
+                                            Thread.sleep(3000)
+                                            trigger = !trigger
                                         }
-                                    )
-                                }
-                                is AsyncImagePainter.State.Success -> SubcomposeAsyncImageContent()
-                                else -> ContentError()
+                                    }
+                                )
                             }
-                        }
-                    )
+                        )
+                    }
+                    HorizontalDivider()
                     Text(
                         modifier = Modifier.padding(16.dp),
                         maxLines = 1,
