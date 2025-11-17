@@ -82,3 +82,9 @@ sheer will and ability for conquering such vast amount of lands, **without
 smartphones, Minecraft: PE, and AirPods**. Many of their infrastructures are
 also still on duty until this second. That's a whole another league of
 engineering level.
+
+### Screenshots
+![Portrait](./screenshots/v1_1.jpg)
+![Landscape](./screenshots/v1_2.jpg)
+![Portrait with dropdown](./screenshots/v1_3.jpg)
+![Landscape with dropdown](./screenshots/v1_4.jpg)
