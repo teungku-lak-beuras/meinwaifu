@@ -2,7 +2,6 @@ package hemel.van.meinwaifu.composes
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.CircularProgressIndicator
@@ -41,9 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.FilterQuality
-import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -51,7 +47,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.ImageLoader
@@ -69,6 +64,9 @@ import hemel.van.meinwaifu.reusables.LandscapeScaffold
 import hemel.van.meinwaifu.reusables.MeinSideAppBar
 import hemel.van.meinwaifu.reusables.MeinTopAppBar
 import hemel.van.meinwaifu.reusables.PortraitScaffold
+import hemel.van.meinwaifu.reusables.borderSmall
+import hemel.van.meinwaifu.reusables.cornerMedium
+import hemel.van.meinwaifu.reusables.dropShadowLight
 import hemel.van.meinwaifu.viewmodels.MainViewModel
 import hemel.van.meinwaifu.viewmodels.factories.MainViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -174,27 +172,12 @@ fun ContentError(
 
 @Composable
 fun WaifuItem(nekosBestWaifuEntity: NekosBestWaifuEntity) {
-    val shape = RoundedCornerShape(24.dp)
-
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .border(
-                width = 1.dp,
-                color = MaterialTheme.colorScheme.outline,
-                shape = shape
-            )
-            .dropShadow(
-                shape = shape,
-                shadow = Shadow(
-                    radius = 4.dp,
-                    spread = 2.dp,
-                    offset = DpOffset(2.dp, 2.dp),
-                    alpha = 0.3f,
-                    color = MaterialTheme.colorScheme.outline
-                )
-            )
-            .clip(shape = shape)
+            .borderSmall(shape = cornerMedium)
+            .dropShadowLight(shape = cornerMedium)
+            .clip(shape = cornerMedium)
             .clickable(onClick = {}),
         content = {
             Column(
