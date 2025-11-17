@@ -18,9 +18,7 @@ support more APIs in the future. `Important`
 `Critical`
 10. Expand the Compose `lazyList` to act similar to Android view's `Paging 3`.
 `Important`
-11. Make the Coil's image loader to auto reload 3 seconds upon encountering
-error. `Critical`
-12. To be added.
+11. To be added.
 
 ### Plan levels information
 
