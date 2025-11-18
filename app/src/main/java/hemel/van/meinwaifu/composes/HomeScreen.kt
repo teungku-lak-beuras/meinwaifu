@@ -46,6 +46,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.ImageLoader
@@ -96,7 +97,7 @@ fun HomeScreenDropDown(
         )
     }
     DropdownMenu(
-        shape = MaterialTheme.shapes.large,
+        shape = cornerMedium,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
         expanded = dropDownExpanded,
         onDismissRequest = { dropDownExpanded = false }
@@ -456,4 +457,80 @@ fun HomeScreen(
             )
         }
     }
+}
+
+/**
+ * Prikitiws
+ */
+fun getWaifus(): List<NekosBestWaifuEntity> {
+    val waifus = mutableListOf<NekosBestWaifuEntity>()
+
+    waifus.add(NekosBestWaifuEntity("abc.com", "abc", "best waifu", "best waifu"))
+    waifus.add(NekosBestWaifuEntity("cde.com", "cde", "meh waifu", "meh waifu"))
+    waifus.add(NekosBestWaifuEntity("efg.com", "efg", "hmm waifu", "hmm waifu"))
+    waifus.add(NekosBestWaifuEntity("ghi.com", "ghi", "owh waifu", "owh waifu"))
+    waifus.add(NekosBestWaifuEntity("abc.com", "abc", "best waifu", "best waifu"))
+    waifus.add(NekosBestWaifuEntity("cde.com", "cde", "meh waifu", "meh waifu"))
+    waifus.add(NekosBestWaifuEntity("efg.com", "efg", "hmm waifu", "hmm waifu"))
+    waifus.add(NekosBestWaifuEntity("ghi.com", "ghi", "owh waifu", "owh waifu"))
+    return waifus
+}
+
+@Preview(
+    name = "Compact screen",
+    device = "spec:width=411dp,height=891dp",
+    showSystemUi = true
+)
+
+@Composable
+fun HomeScreenCompactPreview() {
+    HomeScreenCompact(
+        content = {
+            Content(
+                contentPadding = PaddingValues(
+                    top = 88.dp,
+                    start = 16.dp,
+                    end = 16.dp,
+                    bottom = 16.dp
+                ),
+                nekosBestApiEntity = ApiState.Success(data = getWaifus()),
+                contentErrorCallback = {}
+            )
+        },
+        {},
+        {},
+        {}
+    )
+}
+
+@Preview(
+    name = "Medium screen",
+    device = "spec:width=411dp,height=891dp,orientation=landscape",
+    showSystemUi = true
+)
+@Composable
+fun HomeScreenMediumPreview() {
+    HomeScreenMedium(
+        content = {
+            Content(
+                nekosBestApiEntity = ApiState.Success(data = getWaifus()),
+                contentErrorCallback = {}
+            )
+        },
+        {},
+        {},
+        {}
+    )
+}
+
+@Preview
+@Composable
+fun HomeScreenCompactContentLoadingPreview() {
+    ContentLoading()
+}
+
+@Preview
+@Composable
+fun HomeScreenCompactContentErrorPreview() {
+    ContentError()
 }

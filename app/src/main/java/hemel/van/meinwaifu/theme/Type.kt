@@ -58,4 +58,16 @@ val Typography = Typography(
         fontFamily = fontFamily,
         fontSize = 14.sp
     ),
+    labelSmall = TextStyle(
+        fontFamily = fontFamily,
+        fontSize = 11.sp
+    ),
+    labelMedium = TextStyle(
+        fontFamily = fontFamily,
+        fontSize = 12.sp
+    ),
+    labelLarge = TextStyle(
+        fontFamily = fontFamily,
+        fontSize = 14.sp
+    )
 )
