@@ -251,7 +251,8 @@ fun ContentLoading(loadingText: String = stringResource(R.string.loading)) {
 
 @Composable
 fun ContentError(
-    additionalText: String? = null
+    additionalText: String? = null,
+    errorCallback: (() -> Unit)? = null
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -259,6 +260,14 @@ fun ContentError(
         verticalArrangement = Arrangement.Center,
         content = {
             ErrorItem(additionalText = additionalText)
+            if (errorCallback != null) {
+                ButtonPrimary(
+                    text = stringResource(R.string.retry),
+                    callback = {
+                        errorCallback.invoke()
+                    }
+                )
+            }
         }
     )
 }
@@ -298,15 +307,8 @@ fun Content(
 ) {
     when (nekosBestApiEntity) {
         is ApiState.Loading -> {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                content = {
-                    LoadingItem(
-                        loadingText = stringResource(R.string.fetching)
-                    )
-                }
+            ContentLoading(
+                loadingText = stringResource(R.string.fetching)
             )
         }
         is ApiState.Success<List<NekosBestWaifuEntity>> -> {
@@ -316,19 +318,8 @@ fun Content(
             )
         }
         is ApiState.Error -> {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-                content = {
-                    ErrorItem()
-                    ButtonPrimary(
-                        text = stringResource(R.string.retry),
-                        callback = {
-                            contentErrorCallback.invoke()
-                        }
-                    )
-                }
+            ContentError(
+                errorCallback = contentErrorCallback
             )
         }
     }
