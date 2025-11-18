@@ -2,6 +2,7 @@ package hemel.van.meinwaifu.composes
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -24,7 +25,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -46,7 +46,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.ImageLoader
@@ -60,6 +59,7 @@ import hemel.van.meincore.entitity.NekosBestWaifuEntity
 import hemel.van.meincore.repository.NekosBestApiRepository
 import hemel.van.meincore.repository.utilities.ApiState
 import hemel.van.meinwaifu.R
+import hemel.van.meinwaifu.reusables.ButtonPrimary
 import hemel.van.meinwaifu.reusables.LandscapeScaffold
 import hemel.van.meinwaifu.reusables.MeinSideAppBar
 import hemel.van.meinwaifu.reusables.MeinTopAppBar
@@ -70,8 +70,14 @@ import hemel.van.meinwaifu.reusables.dropShadowLight
 import hemel.van.meinwaifu.viewmodels.MainViewModel
 import hemel.van.meinwaifu.viewmodels.factories.MainViewModelFactory
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+/**
+ * =================================================================================================
+ * Drop down
+ * =================================================================================================
+ */
 @Composable
 fun HomeScreenDropDown(
     navigateToHelpScreen: () -> Unit,
@@ -112,134 +118,147 @@ fun HomeScreenDropDown(
     }
 }
 
+/**
+ * =================================================================================================
+ * Items
+ * =================================================================================================
+ */
 @Composable
-fun ContentLoading(loadingText: String = stringResource(R.string.loading)) {
-    Surface(
+fun LoadingItem(loadingText: String = stringResource(R.string.loading)) {
+    Image(
+        modifier = Modifier.size(72.dp),
+        contentDescription = stringResource(R.string.loading),
+        painter = painterResource(R.drawable.alternative_icon_1)
+    )
+    Text(
+        modifier = Modifier.padding(top = 16.dp),
+        style = MaterialTheme.typography.bodyLarge,
+        text = loadingText
+    )
+}
+
+@Composable
+fun ErrorItem(additionalText: String? = null) {
+    Image(
+        modifier = Modifier.size(72.dp),
+        contentDescription = stringResource(R.string.loading),
+        painter = painterResource(R.drawable.alternative_icon_2),
+    )
+    Text(
+        modifier = Modifier.padding(top = 16.dp),
+        style = MaterialTheme.typography.bodyLarge,
+        text = stringResource(R.string.error)
+    )
+    if (additionalText != null) {
+        Text(
+            modifier= Modifier.padding(top = 8.dp),
+            style = MaterialTheme.typography.bodySmall,
+            textAlign = TextAlign.Center,
+            text = additionalText
+        )
+    }
+}
+
+@Composable
+fun WaifuItem(nekosBestWaifuEntity: NekosBestWaifuEntity) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .dropShadowLight(shape = cornerMedium)
+            .borderSmall(shape = cornerMedium)
+            .background(
+                color = MaterialTheme.colorScheme.surfaceContainer,
+                shape = cornerMedium
+            )
+            .clip(shape = cornerMedium)
+            .clickable(onClick = {}),
         content = {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    modifier = Modifier.size(72.dp),
-                    contentDescription = stringResource(R.string.loading),
-                    painter = painterResource(R.drawable.alternative_icon_1)
-                )
-                Text(
-                    modifier = Modifier.padding(top = 16.dp),
-                    style = MaterialTheme.typography.bodyLarge,
-                    text = loadingText
+            val imageLoader = ImageLoader.Builder(LocalContext.current)
+                .logger(DebugLogger())
+                .build()
+            val imageRequest = ImageRequest.Builder(LocalContext.current)
+                .data(nekosBestWaifuEntity.url)
+                .crossfade(true)
+                .build()
+            var trigger by remember { mutableStateOf(false) }
+
+            key(trigger) {
+                SubcomposeAsyncImage(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(256.dp)
+                        .then(rememberConstraintsSizeResolver()),
+                    model = imageRequest,
+                    filterQuality = FilterQuality.Medium,
+                    imageLoader = imageLoader,
+                    contentScale = ContentScale.Crop,
+                    contentDescription = "Waifu drawn by ${nekosBestWaifuEntity.artistName}",
+                    loading = {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            content = {
+                                ContentLoading()
+                                CircularProgressIndicator()
+                            }
+                        )
+                    },
+                    success = {
+                        SubcomposeAsyncImageContent()
+                    },
+                    error = {
+                        ContentError(
+                            additionalText = stringResource(R.string.retry_in_3s)
+                        )
+                        LaunchedEffect(
+                            key1 = Unit,
+                            block = {
+                                launch(Dispatchers.Default) {
+                                    delay(3000)
+                                    trigger = !trigger
+                                }
+                            }
+                        )
+                    }
                 )
             }
+            HorizontalDivider()
+            Text(
+                modifier = Modifier.padding(16.dp),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                style = MaterialTheme.typography.bodyLarge,
+                text = nekosBestWaifuEntity.artistName
+            )
         }
     )
+}
+
+/**
+ * =================================================================================================
+ * Contents
+ * =================================================================================================
+ */
+@Composable
+fun ContentLoading(loadingText: String = stringResource(R.string.loading)) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        LoadingItem(loadingText = loadingText)
+    }
 }
 
 @Composable
 fun ContentError(
     additionalText: String? = null
 ) {
-    Surface(
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
         content = {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    modifier = Modifier.size(72.dp),
-                    contentDescription = stringResource(R.string.loading),
-                    painter = painterResource(R.drawable.alternative_icon_2),
-                )
-                Text(
-                    modifier = Modifier.padding(top = 16.dp),
-                    style = MaterialTheme.typography.bodyLarge,
-                    text = stringResource(R.string.error)
-                )
-                if (additionalText != null) {
-                    Text(
-                        modifier= Modifier.padding(top = 8.dp),
-                        style = MaterialTheme.typography.bodySmall,
-                        textAlign = TextAlign.Center,
-                        text = additionalText
-                    )
-                }
-            }
-        }
-    )
-}
-
-@Composable
-fun WaifuItem(nekosBestWaifuEntity: NekosBestWaifuEntity) {
-    Surface(
-        modifier = Modifier
-            .fillMaxSize()
-            .borderSmall(shape = cornerMedium)
-            .dropShadowLight(shape = cornerMedium)
-            .clip(shape = cornerMedium)
-            .clickable(onClick = {}),
-        content = {
-            Column(
-                content = {
-                    val imageLoader = ImageLoader.Builder(LocalContext.current)
-                        .logger(DebugLogger())
-                        .build()
-                    val imageRequest = ImageRequest.Builder(LocalContext.current)
-                        .data(nekosBestWaifuEntity.url)
-                        .crossfade(true)
-                        .build()
-                    var trigger by remember { mutableStateOf(false) }
-
-                    key(trigger) {
-                        SubcomposeAsyncImage(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(256.dp)
-                                .then(rememberConstraintsSizeResolver()),
-                            model = imageRequest,
-                            filterQuality = FilterQuality.Medium,
-                            imageLoader = imageLoader,
-                            contentScale = ContentScale.Crop,
-                            contentDescription = "Waifu drawn by ${nekosBestWaifuEntity.artistName}",
-                            loading = {
-                                Box(
-                                    contentAlignment = Alignment.Center,
-                                    content = {
-                                        ContentLoading()
-                                        CircularProgressIndicator()
-                                    }
-                                )
-                            },
-                            success = {
-                                SubcomposeAsyncImageContent()
-                            },
-                            error = {
-                                ContentError(
-                                    additionalText = stringResource(R.string.retry_in_3s)
-                                )
-                                LaunchedEffect(
-                                    key1 = Unit,
-                                    block = {
-                                        launch(Dispatchers.Default) {
-                                            Thread.sleep(3000)
-                                            trigger = !trigger
-                                        }
-                                    }
-                                )
-                            }
-                        )
-                    }
-                    HorizontalDivider()
-                    Text(
-                        modifier = Modifier.padding(16.dp),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.bodyLarge,
-                        text = nekosBestWaifuEntity.artistName
-                    )
-                }
-            )
+            ErrorItem(additionalText = additionalText)
         }
     )
 }
@@ -249,21 +268,17 @@ fun ContentSuccess(
     contentPadding: PaddingValues,
     nekosBestApiEntity: List<NekosBestWaifuEntity>
 ) {
-    Surface(
+    LazyVerticalGrid(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = contentPadding,
+        columns = GridCells.Adaptive(128.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         content = {
-            LazyVerticalGrid(
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = contentPadding,
-                columns = GridCells.Adaptive(128.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                content = {
-                    items(
-                        items = nekosBestApiEntity,
-                        itemContent = { item ->
-                            WaifuItem(item)
-                        }
-                    )
+            items(
+                items = nekosBestApiEntity,
+                itemContent = { item ->
+                    WaifuItem(item)
                 }
             )
         }
@@ -271,27 +286,59 @@ fun ContentSuccess(
 }
 
 @Composable
-fun HomeScreenContent(
+fun Content(
     contentPadding: PaddingValues = PaddingValues(
-        start = 16.dp,
-        end = 16.dp,
         top = 16.dp,
-        bottom = 16.dp
+        bottom = 16.dp,
+        start = 16.dp,
+        end = 16.dp
     ),
-    nekosBestApiEntity: ApiState<List<NekosBestWaifuEntity>>
+    nekosBestApiEntity: ApiState<List<NekosBestWaifuEntity>>,
+    contentErrorCallback: () -> Unit
 ) {
     when (nekosBestApiEntity) {
-        is ApiState.Loading -> ContentLoading(
-            loadingText = stringResource(R.string.fetching)
-        )
-        is ApiState.Success -> ContentSuccess(
-            contentPadding = contentPadding,
-            nekosBestApiEntity = nekosBestApiEntity.data
-        )
-        is ApiState.Error -> ContentError()
+        is ApiState.Loading -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                content = {
+                    LoadingItem(
+                        loadingText = stringResource(R.string.fetching)
+                    )
+                }
+            )
+        }
+        is ApiState.Success<List<NekosBestWaifuEntity>> -> {
+            ContentSuccess(
+                contentPadding = contentPadding,
+                nekosBestApiEntity = nekosBestApiEntity.data
+            )
+        }
+        is ApiState.Error -> {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                content = {
+                    ErrorItem()
+                    ButtonPrimary(
+                        text = stringResource(R.string.retry),
+                        callback = {
+                            contentErrorCallback.invoke()
+                        }
+                    )
+                }
+            )
+        }
     }
 }
 
+/**
+ * =================================================================================================
+ * Screen types
+ * =================================================================================================
+ */
 @Composable
 fun HomeScreenCompact(
     content: @Composable (() -> Unit),
@@ -352,6 +399,10 @@ fun HomeScreenExpanded() {
 }
 
 /**
+ * =================================================================================================
+ * Root screen
+ * =================================================================================================
+ *
  * Magic numbers:
  * 1. 88.dp represents the height of MeinTopAppBar's height (72.dp) + the content padding itself
  *    (16.dp) for better UI consitency.
@@ -365,19 +416,21 @@ fun HomeScreen(
     navigateToAboutScreen: () -> Unit
 ) {
     val nekosBestApiEntity by viewModel.nekosBestWaifus.collectAsState()
+    val contentErrorCallback: () -> Unit = { viewModel.getWaifu() }
 
     when (windowSizeClass.widthSizeClass) {
         WindowWidthSizeClass.Compact -> {
             HomeScreenCompact(
                 content = {
-                    HomeScreenContent(
+                    Content(
                         contentPadding = PaddingValues(
                             top = 88.dp,
+                            bottom = 16.dp,
                             start = 16.dp,
-                            end = 16.dp,
-                            bottom = 16.dp
+                            end = 16.dp
                         ),
-                        nekosBestApiEntity = nekosBestApiEntity
+                        nekosBestApiEntity = nekosBestApiEntity,
+                        contentErrorCallback = contentErrorCallback
                     )
                 },
                 navigateToHelpScreen = navigateToHelpScreen,
@@ -388,7 +441,10 @@ fun HomeScreen(
         WindowWidthSizeClass.Medium -> {
             HomeScreenMedium(
                 content = {
-                    HomeScreenContent(nekosBestApiEntity = nekosBestApiEntity)
+                    Content(
+                        nekosBestApiEntity = nekosBestApiEntity,
+                        contentErrorCallback = contentErrorCallback
+                    )
                 },
                 navigateToHelpScreen = navigateToHelpScreen,
                 navigateToSettingsScreen = navigateToSettingsScreen,
@@ -398,7 +454,10 @@ fun HomeScreen(
         WindowWidthSizeClass.Expanded -> {
             HomeScreenMedium(
                 content = {
-                    HomeScreenContent(nekosBestApiEntity = nekosBestApiEntity)
+                    Content(
+                        nekosBestApiEntity = nekosBestApiEntity,
+                        contentErrorCallback = contentErrorCallback
+                    )
                 },
                 navigateToHelpScreen = navigateToHelpScreen,
                 navigateToSettingsScreen = navigateToSettingsScreen,
@@ -406,77 +465,4 @@ fun HomeScreen(
             )
         }
     }
-}
-
-/**
- * Prikitiws
- */
-fun getWaifus(): List<NekosBestWaifuEntity> {
-    val waifus = mutableListOf<NekosBestWaifuEntity>()
-
-    waifus.add(NekosBestWaifuEntity("abc.com", "abc", "best waifu", "best waifu"))
-    waifus.add(NekosBestWaifuEntity("cde.com", "cde", "meh waifu", "meh waifu"))
-    waifus.add(NekosBestWaifuEntity("efg.com", "efg", "hmm waifu", "hmm waifu"))
-    waifus.add(NekosBestWaifuEntity("ghi.com", "ghi", "owh waifu", "owh waifu"))
-    waifus.add(NekosBestWaifuEntity("abc.com", "abc", "best waifu", "best waifu"))
-    waifus.add(NekosBestWaifuEntity("cde.com", "cde", "meh waifu", "meh waifu"))
-    waifus.add(NekosBestWaifuEntity("efg.com", "efg", "hmm waifu", "hmm waifu"))
-    waifus.add(NekosBestWaifuEntity("ghi.com", "ghi", "owh waifu", "owh waifu"))
-    return waifus
-}
-
-@Preview(
-    name = "Compact screen",
-    device = "spec:width=411dp,height=891dp",
-    showSystemUi = true
-)
-
-@Composable
-fun HomeScreenCompactPreview() {
-    HomeScreenCompact(
-        content = {
-            HomeScreenContent(
-                contentPadding = PaddingValues(
-                    top = 88.dp,
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 16.dp
-                ),
-                nekosBestApiEntity = ApiState.Success(data = getWaifus()))
-        },
-        {},
-        {},
-        {}
-    )
-}
-
-@Preview(
-    name = "Medium screen",
-    device = "spec:width=411dp,height=891dp,orientation=landscape",
-    showSystemUi = true
-)
-@Composable
-fun HomeScreenMediumPreview() {
-    HomeScreenMedium(
-        content = {
-            HomeScreenContent(
-                nekosBestApiEntity = ApiState.Success(data = getWaifus())
-            )
-        },
-        {},
-        {},
-        {}
-    )
-}
-
-@Preview
-@Composable
-fun HomeScreenCompactContentLoadingPreview() {
-    ContentLoading()
-}
-
-@Preview
-@Composable
-fun HomeScreenCompactContentErrorPreview() {
-    ContentError()
 }
