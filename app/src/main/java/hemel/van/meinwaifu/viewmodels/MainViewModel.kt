@@ -12,8 +12,8 @@ import kotlinx.coroutines.launch
 class MainViewModel(
     private val nekosBestApiRepository: NekosBestApiRepository
 ) : ViewModel() {
-    private val _nekosBestWaifus = MutableStateFlow<ApiState<List<NekosBestWaifuEntity>>>(ApiState.Loading)
-    val nekosBestWaifus = _nekosBestWaifus.asStateFlow()
+    private val _waifuEntity = MutableStateFlow<ApiState<List<NekosBestWaifuEntity>>>(ApiState.Loading)
+    val waifuEntity = _waifuEntity.asStateFlow()
 
     init {
         getWaifu()
@@ -21,7 +21,7 @@ class MainViewModel(
 
     fun getWaifu(amount: Int = 16) = viewModelScope.launch {
         nekosBestApiRepository.getWaifu(amount = amount).collect { collecter ->
-            _nekosBestWaifus.value = collecter
+            _waifuEntity.value = collecter
         }
     }
 }

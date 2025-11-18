@@ -30,7 +30,6 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -48,7 +47,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import coil3.ImageLoader
 import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
@@ -57,7 +55,6 @@ import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.util.DebugLogger
 import hemel.van.meincore.entitity.NekosBestWaifuEntity
-import hemel.van.meincore.repository.NekosBestApiRepository
 import hemel.van.meincore.repository.utilities.ApiState
 import hemel.van.meinwaifu.R
 import hemel.van.meinwaifu.reusables.ButtonPrimary
@@ -68,8 +65,6 @@ import hemel.van.meinwaifu.reusables.PortraitScaffold
 import hemel.van.meinwaifu.reusables.borderSmall
 import hemel.van.meinwaifu.reusables.cornerMedium
 import hemel.van.meinwaifu.reusables.dropShadowLight
-import hemel.van.meinwaifu.viewmodels.MainViewModel
-import hemel.van.meinwaifu.viewmodels.factories.MainViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -303,10 +298,10 @@ fun Content(
         start = 16.dp,
         end = 16.dp
     ),
-    nekosBestApiEntity: ApiState<List<NekosBestWaifuEntity>>,
+    waifuEntity: ApiState<List<NekosBestWaifuEntity>>,
     contentErrorCallback: () -> Unit
 ) {
-    when (nekosBestApiEntity) {
+    when (waifuEntity) {
         is ApiState.Loading -> {
             ContentLoading(
                 loadingText = stringResource(R.string.fetching)
@@ -315,7 +310,7 @@ fun Content(
         is ApiState.Success<List<NekosBestWaifuEntity>> -> {
             ContentSuccess(
                 contentPadding = contentPadding,
-                nekosBestApiEntity = nekosBestApiEntity.data
+                nekosBestApiEntity = waifuEntity.data
             )
         }
         is ApiState.Error -> {
@@ -401,15 +396,13 @@ fun HomeScreenExpanded() {
  */
 @Composable
 fun HomeScreen(
-    viewModel: MainViewModel = viewModel(factory = MainViewModelFactory(nekosBestApiRepository = NekosBestApiRepository())),
     windowSizeClass: WindowSizeClass,
+    waifuEntity: ApiState<List<NekosBestWaifuEntity>>,
     navigateToHelpScreen: () -> Unit,
     navigateToSettingsScreen: () -> Unit,
-    navigateToAboutScreen: () -> Unit
+    navigateToAboutScreen: () -> Unit,
+    contentErrorCallback: () -> Unit
 ) {
-    val nekosBestApiEntity by viewModel.nekosBestWaifus.collectAsState()
-    val contentErrorCallback: () -> Unit = { viewModel.getWaifu() }
-
     when (windowSizeClass.widthSizeClass) {
         WindowWidthSizeClass.Compact -> {
             HomeScreenCompact(
@@ -421,7 +414,7 @@ fun HomeScreen(
                             start = 16.dp,
                             end = 16.dp
                         ),
-                        nekosBestApiEntity = nekosBestApiEntity,
+                        waifuEntity = waifuEntity,
                         contentErrorCallback = contentErrorCallback
                     )
                 },
@@ -434,7 +427,7 @@ fun HomeScreen(
             HomeScreenMedium(
                 content = {
                     Content(
-                        nekosBestApiEntity = nekosBestApiEntity,
+                        waifuEntity = waifuEntity,
                         contentErrorCallback = contentErrorCallback
                     )
                 },
@@ -447,7 +440,7 @@ fun HomeScreen(
             HomeScreenMedium(
                 content = {
                     Content(
-                        nekosBestApiEntity = nekosBestApiEntity,
+                        waifuEntity = waifuEntity,
                         contentErrorCallback = contentErrorCallback
                     )
                 },
@@ -493,7 +486,7 @@ fun HomeScreenCompactPreview() {
                     end = 16.dp,
                     bottom = 16.dp
                 ),
-                nekosBestApiEntity = ApiState.Success(data = getWaifus()),
+                waifuEntity = ApiState.Success(data = getWaifus()),
                 contentErrorCallback = {}
             )
         },
@@ -513,7 +506,7 @@ fun HomeScreenMediumPreview() {
     HomeScreenMedium(
         content = {
             Content(
-                nekosBestApiEntity = ApiState.Success(data = getWaifus()),
+                waifuEntity = ApiState.Success(data = getWaifus()),
                 contentErrorCallback = {}
             )
         },

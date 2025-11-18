@@ -5,13 +5,25 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import hemel.van.meincore.repository.NekosBestApiRepository
+import hemel.van.meinwaifu.viewmodels.MainViewModel
+import hemel.van.meinwaifu.viewmodels.factories.MainViewModelFactory
 
 @Composable
 fun MeinWaifu(windowSizeClass: WindowSizeClass) {
     val navController = rememberNavController()
+    val viewModel: MainViewModel = viewModel(
+        factory = MainViewModelFactory(
+            nekosBestApiRepository = NekosBestApiRepository()
+        )
+    )
+    val waifuEntity by viewModel.waifuEntity.collectAsState()
 
     NavHost(
         navController = navController,
@@ -40,6 +52,7 @@ fun MeinWaifu(windowSizeClass: WindowSizeClass) {
         composable("home") {
             HomeScreen(
                 windowSizeClass = windowSizeClass,
+                waifuEntity = waifuEntity,
                 navigateToHelpScreen = {
                     navController.navigate("help")
                 },
@@ -48,6 +61,9 @@ fun MeinWaifu(windowSizeClass: WindowSizeClass) {
                 },
                 navigateToAboutScreen = {
                     navController.navigate("about")
+                },
+                contentErrorCallback = {
+                    viewModel.getWaifu()
                 }
             )
         }
