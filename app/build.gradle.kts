@@ -1,17 +1,9 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
-    alias(libs.plugins.com.android.application)
-    alias(libs.plugins.org.jetbrains.kotlin.android)
-    alias(libs.plugins.org.jetbrains.kotlin.plugin.compose)
+    alias(libs.plugins.meinwaifu.android.application)
 }
 
 android {
     namespace = "hemel.van.meinwaifu"
-
-    compileSdk {
-        version = release(36)
-    }
 
     buildFeatures {
         compose = true
@@ -19,12 +11,8 @@ android {
 
     defaultConfig {
         applicationId = "hemel.van.meinwaifu"
-        minSdk = 26
-        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -34,17 +22,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-        }
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-
-    kotlin {
-        compilerOptions {
-            jvmTarget = JvmTarget.JVM_11
         }
     }
 }
