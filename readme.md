@@ -4,21 +4,44 @@
 
 ### Limitation and plan
 
+Current limitation and plan:
+
 1. Currently, the only supported API is https://nekos.best/api/v2. I plan to
 support more APIs in the future. `Important`
-2. I will implement `offline-first` principle in the future. `Important`
+2. I will implement `offline-first` principle in the future. ~~`Important`~~
+now `Critical`
 3. Support for expanded screen (>= 840 DP). `Plan`
-4. Dependency injection with Hilt. `Important`
+4. Dependency injection with Hilt. ~~`Important`~~ now `Critical`
 5. Implement the help, settings, and about screen. `Plan`
 6. Fix the dark screen for splash screen. `Important`
 7. Add cute toggle-able background music. `Important`
 8. Add more animations such as state change upon ApiState is changing.
-`Important`
-9. Implement single source of truth for Gradle build properties with `buildSrc`.
-`Critical`
-10. Expand the Compose `lazyList` to act similar to Android view's `Paging 3`.
-`Important`
-11. To be added.
+~~`Important`~~ now `Plan`
+9. Expand the Compose `lazyList` to act similar to Android view's `Paging 3`.
+~~`Important`~~ now `Critical`
+10. To be added.
+
+Reasonings for changes:
+1. `offline-first` with SQLite3: This topic is though, but once implemented
+it will eventually ease many things.
+2. `Hilt`: This topic is actually not so important right now, even would
+increase the burden. But, once implemented it will carry the game later.
+3. Do we desperately need more animation right now?
+4. Users are ignorant little fucks and only care for things to work. Will be
+implemented after `offline-first` and `hilt`. Probably will need to implement
+`waifu comparative logic` though. After implemented the data flow would look
+like:
+
+![Portrait](./screenshots/meinwaifu-data-flow-concept.png)
+
+Already implemented:
+
+1. Single source of truth for Gradle build properties with ~~`buildSrc`~~
+`build-logic convention`. This topic wasted my time for more than 3 whole
+fucking weeks only to get it compiles for the first time (19th November 2025,
+17:28 UTC+7).
+2. Implemented retry button upon API call error.
+3. Implemented auto-retry for 3 seconds after image load error.
 
 ### Plan levels information
 
