@@ -1,6 +1,6 @@
 package hemel.van.meincore.repository
 
-import hemel.van.meincore.entitity.NekosBestWaifuEntity
+import hemel.van.meincore.entitity.WaifuEntityV1
 import hemel.van.meincore.network.NekosBestApiDataSource
 import hemel.van.meincore.network.configurations.NekosBestApiConfiguration
 import hemel.van.meincore.repository.utilities.ApiState
@@ -19,16 +19,16 @@ class NekosBestApiRepository(
         nekosBestApiDataSource = NekosBestApiDataSource(NekosBestApiConfiguration.getApiService())
     }
 
-    fun getWaifu(amount: Int): Flow<ApiState<List<NekosBestWaifuEntity>>> = flow {
+    fun getWaifu(amount: Int): Flow<ApiState<List<WaifuEntityV1>>> = flow {
         emit(ApiState.Loading)
 
         try {
             val response = nekosBestApiDataSource.getWaifu(amount = amount)
-            val waifus = mutableListOf<NekosBestWaifuEntity>()
+            val waifus = mutableListOf<WaifuEntityV1>()
 
             for (i in response.results) {
                 waifus.add(
-                    NekosBestWaifuEntity(
+                    WaifuEntityV1(
                         artistHref = i.artistHref,
                         artistName = i.artistName,
                         sourceUrl = i.sourceUrl,

@@ -2,17 +2,17 @@ package hemel.van.meinwaifu.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import hemel.van.meincore.entitity.NekosBestWaifuEntity
-import hemel.van.meincore.repository.NekosBestApiRepository
+import hemel.van.meincore.entitity.WaifuEntityV1
+import hemel.van.meincore.repository.MeinWaifuRepository
 import hemel.van.meincore.repository.utilities.ApiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel(
-    private val nekosBestApiRepository: NekosBestApiRepository
+    private val meinWaifuRepository: MeinWaifuRepository
 ) : ViewModel() {
-    private val _waifuEntity = MutableStateFlow<ApiState<List<NekosBestWaifuEntity>>>(ApiState.Loading)
+    private val _waifuEntity = MutableStateFlow<ApiState<List<WaifuEntityV1>>>(ApiState.Loading)
     val waifuEntity = _waifuEntity.asStateFlow()
 
     init {
@@ -20,7 +20,7 @@ class MainViewModel(
     }
 
     fun getWaifu(amount: Int = 16) = viewModelScope.launch {
-        nekosBestApiRepository.getWaifu(amount = amount).collect { collecter ->
+        meinWaifuRepository.getWaifu(amount = amount).collect { collecter ->
             _waifuEntity.value = collecter
         }
     }

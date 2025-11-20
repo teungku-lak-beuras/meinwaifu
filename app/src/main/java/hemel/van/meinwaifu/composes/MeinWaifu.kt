@@ -11,7 +11,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import hemel.van.meincore.repository.NekosBestApiRepository
+import hemel.van.meincore.repository.MeinWaifuRepository
 import hemel.van.meinwaifu.viewmodels.MainViewModel
 import hemel.van.meinwaifu.viewmodels.factories.MainViewModelFactory
 
@@ -20,7 +20,7 @@ fun MeinWaifu(windowSizeClass: WindowSizeClass) {
     val navController = rememberNavController()
     val viewModel: MainViewModel = viewModel(
         factory = MainViewModelFactory(
-            nekosBestApiRepository = NekosBestApiRepository()
+            meinWaifuRepository = MeinWaifuRepository()
         )
     )
     val waifuEntity by viewModel.waifuEntity.collectAsState()

@@ -54,7 +54,7 @@ import coil3.compose.rememberConstraintsSizeResolver
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import coil3.util.DebugLogger
-import hemel.van.meincore.entitity.NekosBestWaifuEntity
+import hemel.van.meincore.entitity.WaifuEntityV1
 import hemel.van.meincore.repository.utilities.ApiState
 import hemel.van.meinwaifu.R
 import hemel.van.meinwaifu.reusables.ButtonPrimary
@@ -156,7 +156,7 @@ fun ErrorItem(additionalText: String? = null) {
 }
 
 @Composable
-fun WaifuItem(nekosBestWaifuEntity: NekosBestWaifuEntity) {
+fun WaifuItem(waifuEntity: WaifuEntityV1) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -173,7 +173,7 @@ fun WaifuItem(nekosBestWaifuEntity: NekosBestWaifuEntity) {
                 .logger(DebugLogger())
                 .build()
             val imageRequest = ImageRequest.Builder(LocalContext.current)
-                .data(nekosBestWaifuEntity.url)
+                .data(waifuEntity.url)
                 .crossfade(true)
                 .build()
             var trigger by remember { mutableStateOf(false) }
@@ -188,7 +188,7 @@ fun WaifuItem(nekosBestWaifuEntity: NekosBestWaifuEntity) {
                     filterQuality = FilterQuality.Medium,
                     imageLoader = imageLoader,
                     contentScale = ContentScale.Crop,
-                    contentDescription = "Waifu drawn by ${nekosBestWaifuEntity.artistName}",
+                    contentDescription = "Waifu drawn by ${waifuEntity.artistName}",
                     loading = {
                         Box(
                             contentAlignment = Alignment.Center,
@@ -223,7 +223,7 @@ fun WaifuItem(nekosBestWaifuEntity: NekosBestWaifuEntity) {
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.bodyLarge,
-                text = nekosBestWaifuEntity.artistName
+                text = waifuEntity.artistName
             )
         }
     )
@@ -271,7 +271,7 @@ fun ContentError(
 @Composable
 fun ContentSuccess(
     contentPadding: PaddingValues,
-    nekosBestApiEntity: List<NekosBestWaifuEntity>
+    waifuEntity: List<WaifuEntityV1>
 ) {
     LazyVerticalGrid(
         modifier = Modifier.fillMaxSize(),
@@ -281,7 +281,7 @@ fun ContentSuccess(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         content = {
             items(
-                items = nekosBestApiEntity,
+                items = waifuEntity,
                 itemContent = { item ->
                     WaifuItem(item)
                 }
@@ -298,7 +298,7 @@ fun Content(
         start = 16.dp,
         end = 16.dp
     ),
-    waifuEntity: ApiState<List<NekosBestWaifuEntity>>,
+    waifuEntity: ApiState<List<WaifuEntityV1>>,
     contentErrorCallback: () -> Unit
 ) {
     when (waifuEntity) {
@@ -307,10 +307,10 @@ fun Content(
                 loadingText = stringResource(R.string.fetching)
             )
         }
-        is ApiState.Success<List<NekosBestWaifuEntity>> -> {
+        is ApiState.Success<List<WaifuEntityV1>> -> {
             ContentSuccess(
                 contentPadding = contentPadding,
-                nekosBestApiEntity = waifuEntity.data
+                waifuEntity = waifuEntity.data
             )
         }
         is ApiState.Error -> {
@@ -397,7 +397,7 @@ fun HomeScreenExpanded() {
 @Composable
 fun HomeScreen(
     windowSizeClass: WindowSizeClass,
-    waifuEntity: ApiState<List<NekosBestWaifuEntity>>,
+    waifuEntity: ApiState<List<WaifuEntityV1>>,
     navigateToHelpScreen: () -> Unit,
     navigateToSettingsScreen: () -> Unit,
     navigateToAboutScreen: () -> Unit,
@@ -455,17 +455,17 @@ fun HomeScreen(
 /**
  * Prikitiws
  */
-fun getWaifus(): List<NekosBestWaifuEntity> {
-    val waifus = mutableListOf<NekosBestWaifuEntity>()
+fun getWaifus(): List<WaifuEntityV1> {
+    val waifus = mutableListOf<WaifuEntityV1>()
 
-    waifus.add(NekosBestWaifuEntity("abc.com", "abc", "best waifu", "best waifu"))
-    waifus.add(NekosBestWaifuEntity("cde.com", "cde", "meh waifu", "meh waifu"))
-    waifus.add(NekosBestWaifuEntity("efg.com", "efg", "hmm waifu", "hmm waifu"))
-    waifus.add(NekosBestWaifuEntity("ghi.com", "ghi", "owh waifu", "owh waifu"))
-    waifus.add(NekosBestWaifuEntity("abc.com", "abc", "best waifu", "best waifu"))
-    waifus.add(NekosBestWaifuEntity("cde.com", "cde", "meh waifu", "meh waifu"))
-    waifus.add(NekosBestWaifuEntity("efg.com", "efg", "hmm waifu", "hmm waifu"))
-    waifus.add(NekosBestWaifuEntity("ghi.com", "ghi", "owh waifu", "owh waifu"))
+    waifus.add(WaifuEntityV1("abc.com", "abc", "best waifu", "best waifu"))
+    waifus.add(WaifuEntityV1("cde.com", "cde", "meh waifu", "meh waifu"))
+    waifus.add(WaifuEntityV1("efg.com", "efg", "hmm waifu", "hmm waifu"))
+    waifus.add(WaifuEntityV1("ghi.com", "ghi", "owh waifu", "owh waifu"))
+    waifus.add(WaifuEntityV1("abc.com", "abc", "best waifu", "best waifu"))
+    waifus.add(WaifuEntityV1("cde.com", "cde", "meh waifu", "meh waifu"))
+    waifus.add(WaifuEntityV1("efg.com", "efg", "hmm waifu", "hmm waifu"))
+    waifus.add(WaifuEntityV1("ghi.com", "ghi", "owh waifu", "owh waifu"))
     return waifus
 }
 
