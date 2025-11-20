@@ -24,6 +24,10 @@ android {
             buildConfigField("String", "NEKOS_BEST_API", "\"$nekosBestApiEndPoint\"")
         }
     }
+
+    defaultConfig {
+        consumerProguardFiles("consumer-rules.pro")
+    }
 }
 
 dependencies {
