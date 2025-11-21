@@ -1,6 +1,6 @@
 plugins {
     alias(libs.plugins.meinwaifu.android.library)
-    alias(libs.plugins.org.jetbrains.kotlin.plugin.serialization)
+    alias(libs.plugins.meinwaifu.meincore.network)
 }
 
 android {
@@ -29,13 +29,4 @@ android {
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
     }
-}
-
-dependencies {
-    implementation(libs.ktor.client.core)                   // Ktor Core
-    implementation(libs.ktor.client.cio)                    // Ktor Coroutine-based IO
-    implementation(libs.ktor.client.logging)                // Ktor Logger
-    implementation(libs.ktor.client.content.negotitaion)    // Ktor Content Negotiation
-    implementation(libs.ktor.serialization.kotlinx.json)    // Ktor KotlinX JSON Serialiser support
-    implementation(libs.kotlinx.serialization.json)         // KotlinX JSON Serialiser
 }

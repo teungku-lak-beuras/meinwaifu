@@ -32,5 +32,9 @@ gradlePlugin {
             id = "meinwaifu.android.library"
             implementationClass = "AndroidLibraryPlugin"
         }
+        register("network") {
+            id = "meinwaifu.meincore.network"
+            implementationClass = "NetworkPlugin"
+        }
     }
 }
