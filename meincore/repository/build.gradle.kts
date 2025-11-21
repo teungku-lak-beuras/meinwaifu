@@ -10,8 +10,10 @@ dependencies {
     implementation(project(":meincore:entity"))
     implementation(project(":meincore:network"))
 
-    implementation(libs.kotlinx.coroutines.android) // Kotlin Coroutines.
-    implementation(libs.retrofit)                   // Retrofit.
-    implementation(libs.converter.gson)             // Retrofit serialiser.
-    implementation(libs.logging.interceptor)        // Logging interceptor.
+    implementation(libs.ktor.client.core)                   // Ktor Core
+    implementation(libs.ktor.client.cio)                    // Ktor Coroutine-based IO
+    implementation(libs.ktor.client.logging)                // Ktor Logger
+    implementation(libs.ktor.client.content.negotitaion)    // Ktor Content Negotiation
+    implementation(libs.ktor.serialization.kotlinx.json)    // Ktor KotlinX JSON Serialiser support
+    implementation(libs.kotlinx.serialization.json)         // KotlinX JSON Serialiser
 }

@@ -3,5 +3,5 @@ package hemel.van.meincore.repository
 class MeinWaifuRepository {
     private val nekosBestApiRepository: NekosBestApiRepository = NekosBestApiRepository()
 
-    fun getWaifu(amount: Int) = nekosBestApiRepository.getWaifu(amount = amount)
+    fun getWaifuV1(amount: Int) = nekosBestApiRepository.getWaifuV1(amount = amount)
 }
