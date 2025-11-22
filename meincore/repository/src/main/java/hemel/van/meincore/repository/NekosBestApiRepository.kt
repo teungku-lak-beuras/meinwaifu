@@ -6,10 +6,8 @@ import hemel.van.meincore.repository.utilities.ApiState
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.utils.io.errors.IOException
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.serialization.SerializationException
 
 class NekosBestApiRepository {
@@ -54,5 +52,5 @@ class NekosBestApiRepository {
         catch (exception: Exception) {
             emit(ApiState.Error("BAD_BAD: ${exception.cause?.message.toString()}"))
         }
-    }.flowOn(Dispatchers.IO)
+    }
 }

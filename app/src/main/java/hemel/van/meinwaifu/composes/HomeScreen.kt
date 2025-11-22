@@ -304,7 +304,7 @@ fun Content(
     when (waifuEntity) {
         is ApiState.Loading -> {
             ContentLoading(
-                loadingText = stringResource(R.string.fetching)
+                loadingText = stringResource(R.string.loading)
             )
         }
         is ApiState.Success<List<WaifuEntityV1>> -> {

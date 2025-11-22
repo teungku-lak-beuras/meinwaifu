@@ -7,6 +7,7 @@ import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,7 +21,7 @@ fun MeinWaifu(windowSizeClass: WindowSizeClass) {
     val navController = rememberNavController()
     val viewModel: MainViewModel = viewModel(
         factory = MainViewModelFactory(
-            meinWaifuRepository = MeinWaifuRepository()
+            meinWaifuRepository = MeinWaifuRepository(LocalContext.current.applicationContext)
         )
     )
     val waifuEntity by viewModel.waifuEntity.collectAsState()

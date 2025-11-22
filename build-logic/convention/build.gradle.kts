@@ -36,5 +36,9 @@ gradlePlugin {
             id = "meinwaifu.meincore.network"
             implementationClass = "NetworkPlugin"
         }
+        register("local") {
+            id = "meinwaifu.meincore.local"
+            implementationClass = "LocalPlugin"
+        }
     }
 }

@@ -8,10 +8,10 @@ import io.ktor.client.engine.cio.CIOEngineConfig
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.ANDROID
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
-import io.ktor.client.plugins.logging.SIMPLE
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
@@ -44,8 +44,8 @@ fun createHttpClient(
 
         if (enableLogging) {
             install(Logging) {
-                logger = Logger.SIMPLE
-                level = LogLevel.INFO
+                logger = Logger.ANDROID
+                level = LogLevel.BODY
             }
         }
     }

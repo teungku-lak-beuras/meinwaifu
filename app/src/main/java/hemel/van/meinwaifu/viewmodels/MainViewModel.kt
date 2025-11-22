@@ -19,9 +19,11 @@ class MainViewModel(
         getWaifu()
     }
 
-    fun getWaifu(amount: Int = 16) = viewModelScope.launch {
-        meinWaifuRepository.getWaifuV1(amount = amount).collect { collecter ->
-            _waifuEntity.value = collecter
+    fun getWaifu(amount: Int = 16) {
+        viewModelScope.launch {
+            meinWaifuRepository.getWaifuV1(amount = amount).collect { collecter ->
+                _waifuEntity.value = collecter
+            }
         }
     }
 }

@@ -6,10 +6,6 @@ plugins {
 android {
     namespace = "hemel.van.meincore.network"
 
-    compileSdk {
-        version = release(36)
-    }
-
     buildFeatures {
         buildConfig = true
     }
