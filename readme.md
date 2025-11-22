@@ -8,26 +8,23 @@ Current limitation and plan:
 
 1. Currently, the only supported API is https://nekos.best/api/v2. I plan to
 support more APIs in the future. `Important`
-2. I will implement `offline-first` principle in the future. ~~`Important`~~
-now `Critical`
-3. Support for expanded screen (>= 840 DP). `Plan`
-4. Dependency injection with Hilt. ~~`Important`~~ now `Critical`
-5. Implement the help, settings, and about screen. `Plan`
-6. Fix the dark screen for splash screen. `Important`
-7. Add cute toggle-able background music. `Important`
-8. Add more animations such as state change upon ApiState is changing.
+2. Support for expanded screen (>= 840 DP). `Plan`
+3. Dependency injection with Hilt. ~~`Important`~~ now `Critical`
+4. Implement the help, settings, and about screen. `Plan`
+5. Fix the dark screen for splash screen. `Important`
+6. Add cute toggle-able background music. `Important`
+7. Add more animations such as state change upon ApiState is changing.
 ~~`Important`~~ now `Plan`
-9. Expand the Compose `lazyList` to act similar to Android view's `Paging 3`.
+8. Expand the Compose `lazyList` to act similar to Android view's `Paging 3`.
 ~~`Important`~~ now `Critical`
+9. Avoid passing the Context between repositories. Use Hilt instead.
 10. To be added.
 
 Reasonings for changes:
-1. `offline-first` with SQLite3: This topic is though, but once implemented
-it will eventually ease many things.
-2. `Hilt`: This topic is actually not so important right now, even would
+1. `Hilt`: This topic is actually not so important right now, even would
 increase the burden. But, once implemented it will carry the game later.
-3. Do we desperately need more animation right now?
-4. Users are ignorant little fucks and only care for things to work. Will be
+2. Do we desperately need more animation right now?
+3. Users are ignorant little fucks and only care for things to work. Will be
 implemented after `offline-first` and `hilt`. Probably will need to implement
 `waifu comparative logic` though. After implemented the data flow would look
 like:
@@ -42,6 +39,31 @@ fucking weeks only to get it compiles for the first time (19th November 2025,
 17:28 UTC+7).
 2. Implemented retry button upon API call error.
 3. Implemented auto-retry for 3 seconds after image load error.
+4. `offline-first` with Room.
+
+The logic of `offline-first` is like this:
+
+#### The logic of network fetch:
+1. Collect data from network.
+2. Emit loading.
+3. In case of success, write fetched data immediately to the Room database.
+4. In case of network error, do nothing because it does not matter from the
+network's perspective (remember `offline-first`).
+
+#### The logic of local fetch:
+1. Collect data from the local.
+2. Don't emit loading because already emitted by the network.
+3. In case of success, emit the data so that the UI could process and
+display it.
+4. In case of error, emit the error so that the UI could display it.
+
+Important:
+1. Both of network and local fetch are in the same flow function.
+2. In case of application's first time installation, the database will be
+empty. The local repository must handle this: it must emit either loading,
+success with data, or error. It cannot emit success but with empty data as
+this will cause the UI become empty and unusable at all. Data validation
+is beyond UI's scope of concern (remember separation of concern concept).
 
 ### Plan levels information
 

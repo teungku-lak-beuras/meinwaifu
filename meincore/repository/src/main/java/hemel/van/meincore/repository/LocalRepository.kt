@@ -13,6 +13,7 @@ class LocalRepository(
 ) {
     private val localDataSource = LocalDataSource(context = context)
 
+    // ApiState.Success must guarantee a non empty list.
     fun getWaifu(): Flow<ApiState<List<WaifuEntityV1>>> = flow {
         emit(ApiState.Loading)
 
